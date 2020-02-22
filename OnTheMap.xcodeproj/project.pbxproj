@@ -15,6 +15,7 @@
 		1B8B505724018AD1006494B8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1B8B505524018AD1006494B8 /* LaunchScreen.storyboard */; };
 		1B8B506024018AFD006494B8 /* TopLevelDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8B505F24018AFD006494B8 /* TopLevelDictionary.swift */; };
 		1B8B506224018B32006494B8 /* Student.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8B506124018B32006494B8 /* Student.swift */; };
+		1B8B506824018D0C006494B8 /* StudentAPIs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8B506724018D0C006494B8 /* StudentAPIs.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		1B8B505824018AD1006494B8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1B8B505F24018AFD006494B8 /* TopLevelDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopLevelDictionary.swift; sourceTree = "<group>"; };
 		1B8B506124018B32006494B8 /* Student.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Student.swift; sourceTree = "<group>"; };
+		1B8B506724018D0C006494B8 /* StudentAPIs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentAPIs.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +62,7 @@
 		1B8B504924018ACF006494B8 /* OnTheMap */ = {
 			isa = PBXGroup;
 			children = (
+				1B8B506624018CE7006494B8 /* StudentAPIs */,
 				1B8B506524018C89006494B8 /* Storyboards */,
 				1B8B506424018C82006494B8 /* View Controllers */,
 				1B8B505E24018AE6006494B8 /* Models */,
@@ -103,6 +106,14 @@
 				1B8B505024018ACF006494B8 /* Main.storyboard */,
 			);
 			path = Storyboards;
+			sourceTree = "<group>";
+		};
+		1B8B506624018CE7006494B8 /* StudentAPIs */ = {
+			isa = PBXGroup;
+			children = (
+				1B8B506724018D0C006494B8 /* StudentAPIs.swift */,
+			);
+			path = StudentAPIs;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -176,6 +187,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1B8B506824018D0C006494B8 /* StudentAPIs.swift in Sources */,
 				1B8B506024018AFD006494B8 /* TopLevelDictionary.swift in Sources */,
 				1B8B504F24018ACF006494B8 /* ViewController.swift in Sources */,
 				1B8B504B24018ACF006494B8 /* AppDelegate.swift in Sources */,
@@ -326,7 +338,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = X4W7EQ4E4R;
-				INFOPLIST_FILE = OnTheMap/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/OnTheMap/Resources/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -344,7 +356,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = X4W7EQ4E4R;
-				INFOPLIST_FILE = OnTheMap/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/OnTheMap/Resources/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
