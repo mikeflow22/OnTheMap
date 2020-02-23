@@ -75,6 +75,87 @@ class StudentAPIs {
         task.resume()
     }
     
+    class func funcForAllPostMethods<ResponseType: Decodable, RequestType: Encodable>(url: URL, responseType: ResponseType.Type, body: RequestType, completion: @escaping (ResponseType?, Error?) -> Void){
+        print("this is the url: \(url)")
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let encoder = JSONEncoder()
+        encoder.keyEncodingStrategy  = .convertToSnakeCase
+        
+        do {
+            request.httpBody = try encoder.encode(body)
+        } catch  {
+            print("Error in: \(#function)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)")
+            DispatchQueue.main.async {
+                completion(nil, error)
+            }
+        }
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if let response = response as? HTTPURLResponse {
+                print("Response: \(response.statusCode)")
+            }
+            
+            if let error = error {
+                print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
+                completion(nil, error)
+                return
+            }
+            
+            guard let data = data else {
+                print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
+                
+                DispatchQueue.main.async {
+                    completion(nil, error)
+                }
+                
+                return
+            }
+            
+            let decoder = JSONDecoder()
+//            decoder.keyDecodingStrategy = .convertFromSnakeCase
+            
+            do {
+                let responseObject = try decoder.decode(ResponseType.self, from: data)
+                
+                DispatchQueue.main.async {
+                    completion(responseObject, nil)
+                }
+                
+            } catch {
+                print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
+                DispatchQueue.main.async {
+                    completion(nil, error)
+                }
+            }
+        }
+        task.resume()
+    }
+    
+    class func postStudentLocation(student: Student, completion: @escaping (Bool, Error?) -> Void){
+                let body = Student(firstName: student.firstName, lastName: student.lastName, latitude: student.latitude, longitude: student.longitude, mapString: student.mapString, mediaURL: student.mediaURL, createdAt: student.createdAt, objectId: student.objectId, uniqueKey: student.uniqueKey, updatedAt: student.updatedAt)
+        
+        var request = URLRequest(url: Endpoints.getAllStudents.url)
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        let encoder = JSONEncoder()
+        encoder.keyEncodingStrategy = .convertToSnakeCase
+        
+        do {
+            request.httpBody = try encoder.encode(body)
+            DispatchQueue.main.async {
+                completion(true, nil)
+            }
+        } catch  {
+            print("Error in: \(#function)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)")
+            DispatchQueue.main.async {
+                completion(false, error)
+            }
+        }
+    }
+    
     class func getStudentsWithALimit(studentLimit limit: Int, completion: @escaping ([Student]?, Error?) -> Void){
         funcForAllGetMethods(url: Endpoints.limitStudentSearch(limit).url, responseType: TopLevelDictionary.self) { (response, error) in
             if let error = error {
@@ -105,7 +186,6 @@ class StudentAPIs {
             }
         }
     }
-    
     
     class func getAllStudents(completion: @escaping ([Student]?, Error?) -> Void){
         funcForAllGetMethods(url: Endpoints.getAllStudents.url, responseType: TopLevelDictionary.self) { (response, error) in
