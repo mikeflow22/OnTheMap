@@ -32,17 +32,18 @@ class StudentAPIs {
             return URL(string: stringValue)!
         }
     }
-    
-    class func getAllStudents(completion: @escaping ([Student]?, Error?) -> Void){
-        let task = URLSession.shared.dataTask(with: Endpoints.getAllStudents.url) { (data, response, error) in
+    class func funcForAllGetMethods<ResponseType: Decodable>(url: URL, responseType: ResponseType.Type, completion: @escaping (ResponseType?, Error?) -> Void){
+        print("This is the response (GET) url: \(url) for: \(responseType.self).")
+        
+        //create urlSession
+        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
             if let response = response as? HTTPURLResponse {
-                print("Response for \(#function): \(response.statusCode)")
+                print("Response: \(response.statusCode)")
             }
-            
             if let error = error {
                 print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
                 DispatchQueue.main.async {
-                    completion([], error)
+                    completion(nil, error)
                 }
                 return
             }
@@ -50,34 +51,59 @@ class StudentAPIs {
             guard let data = data else {
                 print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
                 DispatchQueue.main.async {
-                    completion([], error)
+                    completion(nil, error)
                 }
                 return
             }
             
             let decoder = JSONDecoder()
             decoder.keyDecodingStrategy = .convertFromSnakeCase
-            var studentsWithFullNames = [Student]()
             
             do {
-                let returnedStudents = try decoder.decode(TopLevelDictionary.self, from: data).results
-                for student in returnedStudents {
-                    if student.firstName != "" && student.lastName != "" {
-//                        print("Student's name: \(student.fullName)")
-                        studentsWithFullNames.append(student)
-                    }
-                }
+                let responseObject =  try decoder.decode(ResponseType.self, from: data)
                 DispatchQueue.main.async {
-                    completion(studentsWithFullNames, nil)
+                    completion(responseObject, nil)
                 }
+                
             } catch  {
                 print("Error in: \(#function)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)")
                 DispatchQueue.main.async {
-                    completion([], error)
+                    completion(nil, error)
                 }
             }
         }
         task.resume()
+    }
+    
+    class func getAllStudents(completion: @escaping ([Student]?, Error?) -> Void){
+        funcForAllGetMethods(url: Endpoints.getAllStudents.url, responseType: TopLevelDictionary.self) { (response, error) in
+            if let error = error {
+                print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
+                DispatchQueue.main.async {
+                    completion(nil, error)
+                }
+                return
+            }
+            if let response = response {
+                var studentsWithFullNames = [Student]()
+                
+                for student in response.results {
+                    if student.firstName != "" && student.lastName != "" {
+                        print("Student's name: \(student.fullName)")
+                        studentsWithFullNames.append(student)
+                    }
+                }
+                
+                DispatchQueue.main.async {
+                    completion(studentsWithFullNames, nil)
+                }
+            } else {
+                DispatchQueue.main.async {
+                    print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
+                    completion(nil, error)
+                }
+            }
+        }
     }
     
 }
