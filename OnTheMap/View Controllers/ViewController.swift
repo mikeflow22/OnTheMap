@@ -13,8 +13,8 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        StudentAPIs.getAllStudents { (students, error) in
-
+        StudentAPIs.getStudentsWithALimit(studentLimit: 5) { (students, error) in
+            
         }
     }
 

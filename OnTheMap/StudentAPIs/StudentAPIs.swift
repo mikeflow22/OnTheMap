@@ -75,6 +75,38 @@ class StudentAPIs {
         task.resume()
     }
     
+    class func getStudentsWithALimit(studentLimit limit: Int, completion: @escaping ([Student]?, Error?) -> Void){
+        funcForAllGetMethods(url: Endpoints.limitStudentSearch(limit).url, responseType: TopLevelDictionary.self) { (response, error) in
+            if let error = error {
+                print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
+                DispatchQueue.main.async {
+                    completion(nil, error)
+                }
+                return
+            }
+            if let response = response {
+                var studentsWithFullNames = [Student]()
+                
+                for student in response.results {
+                    if student.firstName != "" && student.lastName != "" {
+                        print("Student's name: \(student.fullName)")
+                        studentsWithFullNames.append(student)
+                    }
+                }
+                
+                DispatchQueue.main.async {
+                    completion(studentsWithFullNames, nil)
+                }
+            } else {
+                DispatchQueue.main.async {
+                    print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
+                    completion(nil, error)
+                }
+            }
+        }
+    }
+    
+    
     class func getAllStudents(completion: @escaping ([Student]?, Error?) -> Void){
         funcForAllGetMethods(url: Endpoints.getAllStudents.url, responseType: TopLevelDictionary.self) { (response, error) in
             if let error = error {
