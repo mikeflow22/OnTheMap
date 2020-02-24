@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1B002ECD2404787600569E91 /* PutStudentResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B002ECC2404787600569E91 /* PutStudentResponse.swift */; };
 		1B002ECF240478D300569E91 /* SessionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B002ECE240478D300569E91 /* SessionResponse.swift */; };
+		1B002ED124047F7600569E91 /* LogoutRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B002ED024047F7600569E91 /* LogoutRequest.swift */; };
 		1B8B504B24018ACF006494B8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8B504A24018ACF006494B8 /* AppDelegate.swift */; };
 		1B8B504D24018ACF006494B8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8B504C24018ACF006494B8 /* SceneDelegate.swift */; };
 		1B8B504F24018ACF006494B8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8B504E24018ACF006494B8 /* ViewController.swift */; };
@@ -24,6 +25,7 @@
 /* Begin PBXFileReference section */
 		1B002ECC2404787600569E91 /* PutStudentResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PutStudentResponse.swift; sourceTree = "<group>"; };
 		1B002ECE240478D300569E91 /* SessionResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionResponse.swift; sourceTree = "<group>"; };
+		1B002ED024047F7600569E91 /* LogoutRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutRequest.swift; sourceTree = "<group>"; };
 		1B8B504724018ACF006494B8 /* OnTheMap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OnTheMap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1B8B504A24018ACF006494B8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1B8B504C24018ACF006494B8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -92,6 +94,7 @@
 			children = (
 				1B8B505F24018AFD006494B8 /* TopLevelDictionary.swift */,
 				1B8B506124018B32006494B8 /* Student.swift */,
+				1B002ED024047F7600569E91 /* LogoutRequest.swift */,
 				1B002ECB240477A600569E91 /* Responses */,
 			);
 			path = Models;
@@ -209,6 +212,7 @@
 				1B002ECD2404787600569E91 /* PutStudentResponse.swift in Sources */,
 				1B8B506A24020611006494B8 /* StudentPostResponse.swift in Sources */,
 				1B8B504F24018ACF006494B8 /* ViewController.swift in Sources */,
+				1B002ED124047F7600569E91 /* LogoutRequest.swift in Sources */,
 				1B002ECF240478D300569E91 /* SessionResponse.swift in Sources */,
 				1B8B504B24018ACF006494B8 /* AppDelegate.swift in Sources */,
 				1B8B506224018B32006494B8 /* Student.swift in Sources */,

@@ -141,6 +141,10 @@ class StudentAPIs {
         task.resume()
     }
     
+    class func logout(completion: @escaping (Bool, Error?) -> Void){
+        
+    }
+    
     class func updateStudentLocation(student: Student, completion: @escaping (Bool, Error?) -> Void){
         
         let body = assignStudentToBody(student)
@@ -173,8 +177,26 @@ class StudentAPIs {
                 return
             }
             
-            DispatchQueue.main.async {
-                completion(true,nil)
+            guard let data = data else {
+                print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
+                completion(false, error)
+                return
+            }
+            print(String(data: data, encoding: .utf8)!)
+            let decoder = JSONDecoder()
+            decoder.keyDecodingStrategy = .convertFromSnakeCase
+            
+            do {
+                let responseObject = try decoder.decode(PutStudentResponse.self, from: data)
+                print("student was updated at:  \(responseObject.updatedAt)")
+                DispatchQueue.main.async {
+                    completion(true,nil)
+                }
+            } catch  {
+                print("Error in: \(#function)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)")
+                DispatchQueue.main.async {
+                    completion(false, nil)
+                }
             }
         }
         task.resume()
@@ -184,6 +206,7 @@ class StudentAPIs {
         let body =  assignStudentToBody(student)
         
         var request = URLRequest(url: Endpoints.getAllStudents.url)
+        print("this is the url for function: \(#function) -> url:  \(Endpoints.getAllStudents.url)")
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
@@ -199,6 +222,7 @@ class StudentAPIs {
             }
         }
         
+        
         let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
             if let response = response as? HTTPURLResponse {
                 print("Response in postStudentLocation(): \(response.statusCode)")
@@ -211,35 +235,32 @@ class StudentAPIs {
                 return
             }
             
-            DispatchQueue.main.async {
-                completion(true,nil)
+            guard let data =  data else {
+                print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
+                DispatchQueue.main.async {
+                    completion(false, error)
+                }
+                return
             }
-            //            guard let data =  data else {
-            //                print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
-            //                DispatchQueue.main.async {
-            //                    completion(false, error)
-            //                }
-            //                return
-            //            }
             
-            //            print(String(data: data, encoding: .utf8)!)
-            //            let decoder = JSONDecoder()
-            ////            decoder.keyDecodingStrategy = .convertFromSnakeCase
-            //
-            //            do {
-            //                let object = try decoder.decode(StudentPostResponse.self, from: data)
-            //               let datay = try decoder.decode(String.self, from: data)
-            //                print("Object's creation date: \(object.createdAt)")
-            //                DispatchQueue.main.async {
-            //                    print("datay: \(datay)")
-            //                    completion(true, nil)
-            //                }
-            //            } catch  {
-            //                print("Error in: \(#function)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)")
-            //                DispatchQueue.main.async {
-            //                    completion(false, error)
-            //                }
-            //            }
+            print(String(data: data, encoding: .utf8)!)
+            let decoder = JSONDecoder()
+            //            decoder.keyDecodingStrategy = .convertFromSnakeCase
+            
+            do {
+                let object = try decoder.decode(StudentPostResponse.self, from: data)
+                let datay = try decoder.decode(String.self, from: data)
+                print("Object's creation date: \(object.createdAt)")
+                DispatchQueue.main.async {
+                    print("datay: \(datay)")
+                    completion(true, nil)
+                }
+            } catch  {
+                print("Error in: \(#function)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)")
+                DispatchQueue.main.async {
+                    completion(false, error)
+                }
+            }
         }
         task.resume()
     }
