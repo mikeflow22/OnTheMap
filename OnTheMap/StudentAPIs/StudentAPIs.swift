@@ -19,12 +19,14 @@ class StudentAPIs {
         case getAllStudents
         case limitStudentSearch(Int)
         case searchWithUniqueKey(String)
+        case updateStudentLocation(String)
         
         var stringValue: String {
             switch self {
             case .getAllStudents: return Endpoints.base
             case .limitStudentSearch(let number): return Endpoints.base + Endpoints.limitQuery + "\(number)"
             case .searchWithUniqueKey(let userId):  return  Endpoints.base + Endpoints.uniqueKeyQuery + "\(userId)"
+            case .updateStudentLocation(let objectId): return Endpoints.base + "/\(objectId)"
             }
         }
         
@@ -32,6 +34,11 @@ class StudentAPIs {
             return URL(string: stringValue)!
         }
     }
+    
+    static func assignStudentToBody(_ student: Student) -> Student {
+        return Student(firstName: student.firstName, lastName: student.lastName, latitude: student.latitude, longitude: student.longitude, mapString: student.mapString, mediaURL: student.mediaURL, createdAt: student.createdAt, objectId: student.objectId, uniqueKey: student.uniqueKey, updatedAt: student.updatedAt)
+    }
+    
     class func funcForAllGetMethods<ResponseType: Decodable>(url: URL, responseType: ResponseType.Type, completion: @escaping (ResponseType?, Error?) -> Void){
         print("This is the response (GET) url: \(url) for: \(responseType.self).")
         
@@ -115,7 +122,7 @@ class StudentAPIs {
             }
             
             let decoder = JSONDecoder()
-//            decoder.keyDecodingStrategy = .convertFromSnakeCase
+            decoder.keyDecodingStrategy = .convertFromSnakeCase
             
             do {
                 let responseObject = try decoder.decode(ResponseType.self, from: data)
@@ -134,26 +141,107 @@ class StudentAPIs {
         task.resume()
     }
     
-    class func postStudentLocation(student: Student, completion: @escaping (Bool, Error?) -> Void){
-                let body = Student(firstName: student.firstName, lastName: student.lastName, latitude: student.latitude, longitude: student.longitude, mapString: student.mapString, mediaURL: student.mediaURL, createdAt: student.createdAt, objectId: student.objectId, uniqueKey: student.uniqueKey, updatedAt: student.updatedAt)
+    class func updateStudentLocation(student: Student, completion: @escaping (Bool, Error?) -> Void){
         
-        var request = URLRequest(url: Endpoints.getAllStudents.url)
-        request.httpMethod = "POST"
+        let body = assignStudentToBody(student)
+        print("This is the url for: \(#function) -> \(Endpoints.updateStudentLocation(body.objectId).url)")
+        var request = URLRequest(url: Endpoints.updateStudentLocation(body.objectId).url)
+        request.httpMethod = "PUT"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        
         let encoder = JSONEncoder()
         encoder.keyEncodingStrategy = .convertToSnakeCase
         
         do {
             request.httpBody = try encoder.encode(body)
-            DispatchQueue.main.async {
-                completion(true, nil)
-            }
         } catch  {
             print("Error in: \(#function)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)")
             DispatchQueue.main.async {
                 completion(false, error)
             }
         }
+        
+        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+            if let response = response as? HTTPURLResponse {
+                print("Response in: \(#function) \(response.statusCode)")
+            }
+            if let error = error {
+                print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
+                DispatchQueue.main.async {
+                    completion(false, error)
+                }
+                return
+            }
+            
+            DispatchQueue.main.async {
+                completion(true,nil)
+            }
+        }
+        task.resume()
+    }
+    
+    class func postStudentLocation(student: Student, completion: @escaping (Bool, Error?) -> Void){
+        let body =  assignStudentToBody(student)
+        
+        var request = URLRequest(url: Endpoints.getAllStudents.url)
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let encoder = JSONEncoder()
+        encoder.keyEncodingStrategy = .convertToSnakeCase
+        
+        do {
+            request.httpBody = try encoder.encode(body)
+        } catch  {
+            print("Error in: \(#function)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)")
+            DispatchQueue.main.async {
+                completion(false, error)
+            }
+        }
+        
+        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+            if let response = response as? HTTPURLResponse {
+                print("Response in postStudentLocation(): \(response.statusCode)")
+            }
+            if let error = error {
+                print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
+                DispatchQueue.main.async {
+                    completion(false, error)
+                }
+                return
+            }
+            
+            DispatchQueue.main.async {
+                completion(true,nil)
+            }
+            //            guard let data =  data else {
+            //                print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
+            //                DispatchQueue.main.async {
+            //                    completion(false, error)
+            //                }
+            //                return
+            //            }
+            
+            //            print(String(data: data, encoding: .utf8)!)
+            //            let decoder = JSONDecoder()
+            ////            decoder.keyDecodingStrategy = .convertFromSnakeCase
+            //
+            //            do {
+            //                let object = try decoder.decode(StudentPostResponse.self, from: data)
+            //               let datay = try decoder.decode(String.self, from: data)
+            //                print("Object's creation date: \(object.createdAt)")
+            //                DispatchQueue.main.async {
+            //                    print("datay: \(datay)")
+            //                    completion(true, nil)
+            //                }
+            //            } catch  {
+            //                print("Error in: \(#function)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)")
+            //                DispatchQueue.main.async {
+            //                    completion(false, error)
+            //                }
+            //            }
+        }
+        task.resume()
     }
     
     class func getStudentsWithALimit(studentLimit limit: Int, completion: @escaping ([Student]?, Error?) -> Void){

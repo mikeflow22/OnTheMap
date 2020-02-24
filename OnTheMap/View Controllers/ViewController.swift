@@ -13,11 +13,13 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-//        StudentAPIs.getStudentWithUniqueId("1234") { (student, error) in
+//        StudentAPIs.getStudentsWithALimit(studentLimit: 1) { (students, error) in
 //
 //        }
-        let student = Student(firstName: "mike", lastName: "flow", latitude: 84.0000, longitude: -122.0000, mapString: "mapstring", mediaURL: "mediaURL", createdAt: "createdAt", objectId: "objectID", uniqueKey: "uniqueKey", updatedAt: "updatedAt")
-        StudentAPIs.postStudentLocation(student: student) { (success, error) in
+        let student = Student(firstName: "mike", lastName: "flow", latitude: 84.0000, longitude: -122.0000, mapString: "mapstring", mediaURL: "mediaURL", createdAt: "createdAt", objectId: "8ZExGR5uX8", uniqueKey: "uniqueKey", updatedAt: "updatedAt")
+        
+        StudentAPIs.updateStudentLocation(student: student) { (success, error) in
+            
             if success {
                 print("Success in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
                 DispatchQueue.main.async {
