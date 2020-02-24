@@ -9,10 +9,12 @@
 import Foundation
 
 struct LogoutRequest: Codable {
-    let session: [LogoutSessionInformation] //probably can use sessionResponse SessionInformation struct here
+    let session: LogoutSessionInformation //probably can use sessionResponse SessionInformation struct here
+    
 }
 
 struct LogoutSessionInformation: Codable {
     let id: String
     let expiration: String
 }
+

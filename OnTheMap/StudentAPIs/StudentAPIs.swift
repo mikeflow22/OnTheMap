@@ -10,16 +10,22 @@ import Foundation
 
 class StudentAPIs {
     
+    struct Auth {
+        static var sessionId = ""
+    }
+    
     //MARK: - Endpoints
     enum Endpoints {
         static let base = "https://onthemap-api.udacity.com/v1/StudentLocation"
         static let limitQuery = "?limit="
         static let uniqueKeyQuery = "?uniqueKey="
+        static let sessionParam = "https://onthemap-api.udacity.com/v1/session"
         
         case getAllStudents
         case limitStudentSearch(Int)
         case searchWithUniqueKey(String)
         case updateStudentLocation(String)
+        case session
         
         var stringValue: String {
             switch self {
@@ -27,6 +33,8 @@ class StudentAPIs {
             case .limitStudentSearch(let number): return Endpoints.base + Endpoints.limitQuery + "\(number)"
             case .searchWithUniqueKey(let userId):  return  Endpoints.base + Endpoints.uniqueKeyQuery + "\(userId)"
             case .updateStudentLocation(let objectId): return Endpoints.base + "/\(objectId)"
+            case .session: return Endpoints.sessionParam
+            
             }
         }
         
@@ -142,6 +150,38 @@ class StudentAPIs {
     }
     
     class func logout(completion: @escaping (Bool, Error?) -> Void){
+        var request = URLRequest(url: Endpoints.session.url)
+        print("This is the url in function: \(#function) -> url: \(Endpoints.session.url)")
+        
+        request.httpMethod  = "DELETE"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        let body = LogoutSessionInformation(id: Auth.sessionId, expiration: "n/a")
+        
+        let encoder = JSONEncoder()
+        do {
+            request.httpBody = try encoder.encode(body)
+        } catch  {
+            print("Error in: \(#function)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)")
+        }
+        
+        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+               if let response = response as? HTTPURLResponse {
+                   print("Response deleting session: \(response.statusCode)")
+               }
+               
+               if let error = error {
+                   print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
+                   completion(false, error)
+                   return
+               }
+            
+            //DELETE SESSION ID
+            Auth.sessionId = ""
+            DispatchQueue.main.async {
+                completion(true, nil)
+            }
+           }
+           task.resume()
         
     }
     
