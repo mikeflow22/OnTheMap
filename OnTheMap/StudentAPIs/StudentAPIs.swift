@@ -12,6 +12,9 @@ class StudentAPIs {
     
     struct Auth {
         static var sessionId = ""
+        static var accountKey = ""
+        static var registered = false
+        static var expiration = ""
     }
     
     //MARK: - Endpoints
@@ -148,6 +151,12 @@ class StudentAPIs {
         }
         task.resume()
     }
+    
+//    class func getUserData(student: Student, completion: @)
+//    
+//    class func signup(username: String, password: String){
+//        
+//    }
     
     class func logout(completion: @escaping (Bool, Error?) -> Void){
         var request = URLRequest(url: Endpoints.session.url)
