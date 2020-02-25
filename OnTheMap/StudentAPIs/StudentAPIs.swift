@@ -11,10 +11,20 @@ import Foundation
 class StudentAPIs {
     
     struct Auth {
-        static var sessionId = ""
-        static var accountKey = ""
+        static var sessionId: String?
+        static var accountKey: String?
         static var registered = false
-        static var expiration = ""
+        static var expiration: String?
+    }
+    
+    struct ParseHeaderKeys {
+        static let APIKey = "X-Parse-REST-API-Key"
+        static let ApplicationID = "X-Parse-Application-Id"
+    }
+    
+    struct ParseHeaderValues {
+        static let APIKeyValues = "QuWThTdiRmTux3YaDseUSEpUKo7aBYM737yKd4gY"
+        static let ApplicationIDValues = "QrX47CA9cyuGewLdsL7o5Eb8iug6Em8ye0dnAbIr"
     }
     
     //MARK: - Endpoints
@@ -37,7 +47,6 @@ class StudentAPIs {
             case .searchWithUniqueKey(let userId):  return  Endpoints.base + Endpoints.uniqueKeyQuery + "\(userId)"
             case .updateStudentLocation(let objectId): return Endpoints.base + "/\(objectId)"
             case .session: return Endpoints.sessionParam
-            
             }
         }
         
@@ -97,7 +106,14 @@ class StudentAPIs {
         print("this is the url: \(url)")
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
+        
+        //per mentors adding the first addValue method
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        //per mentors "when you make a  request to the server you will need to pass 2 parameters "x-parse-rest-api-key" and "x-parse-application-id" to the header.
+        request.addValue(ParseHeaderKeys.APIKey, forHTTPHeaderField: ParseHeaderValues.APIKeyValues)
+        request.addValue(ParseHeaderKeys.ApplicationID, forHTTPHeaderField: ParseHeaderValues.ApplicationIDValues)
         
         let encoder = JSONEncoder()
         encoder.keyEncodingStrategy  = .convertToSnakeCase
@@ -136,7 +152,10 @@ class StudentAPIs {
             decoder.keyDecodingStrategy = .convertFromSnakeCase
             
             do {
-                let responseObject = try decoder.decode(ResponseType.self, from: data)
+                //per Mentor's adding the newData property
+                let newData = data.subdata(in: 5..<data.count)
+                let responseObject = try decoder.decode(ResponseType.self, from: newData)
+                print(String(data: newData, encoding: .utf8)!)
                 
                 DispatchQueue.main.async {
                     completion(responseObject, nil)
@@ -152,11 +171,38 @@ class StudentAPIs {
         task.resume()
     }
     
-//    class func getUserData(student: Student, completion: @)
-//    
-//    class func signup(username: String, password: String){
-//        
-//    }
+    //    class func getUserData(student: Student, completion: @)
+    //
+    
+    class func login(with email: String, password: String, completion: @escaping (Bool, Error?) -> ()){
+        let url = Endpoints.session.url
+        let body = "{\"udacity\": {\"username\": \"\(email)\", \"password\": \"\(password)\"}}".data(using: .utf8)
+        print("Body in the login function: \(body.debugDescription)")
+        
+        funcForAllPostMethods(url: url, responseType: SessionResponse.self, body: body) { (responseObject, error) in
+            if let error = error {
+                print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
+               completion(false, error)
+                return
+            }
+            
+            if let responseObject = responseObject {
+                Auth.sessionId = responseObject.session?.id
+                print("this is the sessionId we got back from loggin in: \(String(describing: Auth.sessionId))")
+                
+                Auth.expiration = responseObject.session?.expeiration
+                 print("this is the user's expiration date we got back from loggin in: \(String(describing: Auth.expiration))")
+                DispatchQueue.main.async {
+                    completion(true, nil)
+                }
+            } else {
+                print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
+                DispatchQueue.main.async {
+                    completion(false, nil)
+                }
+            }
+        }
+    }
     
     class func logout(completion: @escaping (Bool, Error?) -> Void){
         var request = URLRequest(url: Endpoints.session.url)
@@ -174,23 +220,23 @@ class StudentAPIs {
         }
         
         let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
-               if let response = response as? HTTPURLResponse {
-                   print("Response deleting session: \(response.statusCode)")
-               }
-               
-               if let error = error {
-                   print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
-                   completion(false, error)
-                   return
-               }
+            if let response = response as? HTTPURLResponse {
+                print("Response deleting session: \(response.statusCode)")
+            }
+            
+            if let error = error {
+                print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
+                completion(false, error)
+                return
+            }
             
             //DELETE SESSION ID
             Auth.sessionId = ""
             DispatchQueue.main.async {
                 completion(true, nil)
             }
-           }
-           task.resume()
+        }
+        task.resume()
         
     }
     

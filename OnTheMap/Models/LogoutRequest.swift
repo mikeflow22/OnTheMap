@@ -13,7 +13,7 @@ struct LogoutRequest: Codable {
 }
 
 struct LogoutSessionInformation: Codable {
-    let id: String
+    let id: String?
     let expiration: String
 }
 
