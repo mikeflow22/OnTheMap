@@ -21,6 +21,7 @@
 		1B8B506224018B32006494B8 /* Student.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8B506124018B32006494B8 /* Student.swift */; };
 		1B8B506824018D0C006494B8 /* StudentAPIs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8B506724018D0C006494B8 /* StudentAPIs.swift */; };
 		1B8B506A24020611006494B8 /* StudentPostResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8B506924020611006494B8 /* StudentPostResponse.swift */; };
+		1BAA79A92405A53300FCE23B /* LoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BAA79A82405A53300FCE23B /* LoginRequest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 		1B8B506124018B32006494B8 /* Student.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Student.swift; sourceTree = "<group>"; };
 		1B8B506724018D0C006494B8 /* StudentAPIs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentAPIs.swift; sourceTree = "<group>"; };
 		1B8B506924020611006494B8 /* StudentPostResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentPostResponse.swift; sourceTree = "<group>"; };
+		1BAA79A82405A53300FCE23B /* LoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRequest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +101,7 @@
 				1B8B506124018B32006494B8 /* Student.swift */,
 				1B002ED024047F7600569E91 /* LogoutRequest.swift */,
 				1B002ECB240477A600569E91 /* Responses */,
+				1BAA79A82405A53300FCE23B /* LoginRequest.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -213,6 +216,7 @@
 				1B8B506824018D0C006494B8 /* StudentAPIs.swift in Sources */,
 				1B8B506024018AFD006494B8 /* TopLevelDictionary.swift in Sources */,
 				1B002ED324048DF500569E91 /* GetUserResponse.swift in Sources */,
+				1BAA79A92405A53300FCE23B /* LoginRequest.swift in Sources */,
 				1B002ECD2404787600569E91 /* PutStudentResponse.swift in Sources */,
 				1B8B506A24020611006494B8 /* StudentPostResponse.swift in Sources */,
 				1B8B504F24018ACF006494B8 /* LogInViewController.swift in Sources */,
