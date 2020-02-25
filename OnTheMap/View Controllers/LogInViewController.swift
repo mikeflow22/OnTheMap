@@ -10,6 +10,12 @@ import UIKit
 
 class LogInViewController: UIViewController {
 
+    //MARK: - IBOutlets
+    @IBOutlet weak var emailTextField: UITextField!
+    @IBOutlet weak var passwordTextField: UITextField!
+    @IBOutlet weak var loginButtonProperties: UIButton!
+    @IBOutlet weak var signupButtonProperties: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         let student = Student(firstName: "mike", lastName: "flow", latitude: 84.0000, longitude: -122.0000, mapString: "mapstring", mediaURL: "mediaURL", createdAt: "createdAt", objectId: "8ZExGR5uX8", uniqueKey: "uniqueKey", updatedAt: "updatedAt")
@@ -68,6 +74,13 @@ class LogInViewController: UIViewController {
 //                }
     }
 
-
+    
+    //MARK: - IBActions
+    @IBAction func loginButtonTapped(_ sender: UIButton) {
+    }
+    
+    @IBAction func signUpButtonTapped(_ sender: UIButton) {
+    }
+    
 }
 
