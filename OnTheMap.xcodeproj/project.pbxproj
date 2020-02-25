@@ -22,6 +22,7 @@
 		1B8B506824018D0C006494B8 /* StudentAPIs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8B506724018D0C006494B8 /* StudentAPIs.swift */; };
 		1B8B506A24020611006494B8 /* StudentPostResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8B506924020611006494B8 /* StudentPostResponse.swift */; };
 		1BAA79A92405A53300FCE23B /* LoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BAA79A82405A53300FCE23B /* LoginRequest.swift */; };
+		1BAA79AB2405DD5100FCE23B /* PostStudentRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BAA79AA2405DD5100FCE23B /* PostStudentRequest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,7 @@
 		1B8B506724018D0C006494B8 /* StudentAPIs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentAPIs.swift; sourceTree = "<group>"; };
 		1B8B506924020611006494B8 /* StudentPostResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentPostResponse.swift; sourceTree = "<group>"; };
 		1BAA79A82405A53300FCE23B /* LoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRequest.swift; sourceTree = "<group>"; };
+		1BAA79AA2405DD5100FCE23B /* PostStudentRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostStudentRequest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,9 +101,10 @@
 			children = (
 				1B8B505F24018AFD006494B8 /* TopLevelDictionary.swift */,
 				1B8B506124018B32006494B8 /* Student.swift */,
-				1B002ED024047F7600569E91 /* LogoutRequest.swift */,
-				1B002ECB240477A600569E91 /* Responses */,
 				1BAA79A82405A53300FCE23B /* LoginRequest.swift */,
+				1B002ED024047F7600569E91 /* LogoutRequest.swift */,
+				1BAA79AA2405DD5100FCE23B /* PostStudentRequest.swift */,
+				1B002ECB240477A600569E91 /* Responses */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -223,6 +226,7 @@
 				1B002ED124047F7600569E91 /* LogoutRequest.swift in Sources */,
 				1B002ECF240478D300569E91 /* SessionResponse.swift in Sources */,
 				1B8B504B24018ACF006494B8 /* AppDelegate.swift in Sources */,
+				1BAA79AB2405DD5100FCE23B /* PostStudentRequest.swift in Sources */,
 				1B8B506224018B32006494B8 /* Student.swift in Sources */,
 				1B8B504D24018ACF006494B8 /* SceneDelegate.swift in Sources */,
 			);

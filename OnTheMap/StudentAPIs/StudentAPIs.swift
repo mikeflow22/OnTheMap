@@ -176,10 +176,9 @@ class StudentAPIs {
     
     class func login(with email: String, password: String, completion: @escaping (Bool, Error?) -> ()){
         let url = Endpoints.session.url
-        let body = "{\"udacity\": {\"username\": \"\(email)\", \"password\": \"\(password)\"}}".data(using: .utf8)
-        print("Body in the login function: \(body.debugDescription)")
-        
-        funcForAllPostMethods(url: url, responseType: SessionResponse.self, body: body) { (responseObject, error) in
+        let loginRequestBody = LoginRequest(udacity: LoginData(username: email, password: password))
+
+        funcForAllPostMethods(url: url, responseType: SessionResponse.self, body: loginRequestBody) { (responseObject, error) in
             if let error = error {
                 print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
                completion(false, error)
@@ -231,13 +230,13 @@ class StudentAPIs {
             }
             
             //DELETE SESSION ID
-            Auth.sessionId = ""
+            Auth.sessionId = nil
             DispatchQueue.main.async {
+                print("The session ID sould now be empty: \(String(describing: Auth.sessionId))")
                 completion(true, nil)
             }
         }
         task.resume()
-        
     }
     
     class func updateStudentLocation(student: Student, completion: @escaping (Bool, Error?) -> Void){

@@ -11,7 +11,6 @@ import Foundation
 struct SessionResponse: Codable {
     let account: AccountInformation?
     let session: SessionInformation?
-
 }
 
 struct AccountInformation: Codable {
