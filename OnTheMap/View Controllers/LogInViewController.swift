@@ -27,7 +27,7 @@ class LogInViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let student = Student(firstName: "John", lastName: "Doe", latitude: 37.322998, longitude: -122.032182, mapString: "Cupertino, CA", mediaURL: "https://udacity.com", createdAt: "createdAt", objectId: "8ZExGR5uX8", uniqueKey: "3903878747", updatedAt: "updatedAt")
+        let student = Student(firstName: "John", lastName: "Doe", longitude: -122.032182, latitude: 37.322998, mapString: "Cupertino, CA", mediaURL: "https://udacity.com", uniqueKey: "createdAt", objectId: "8ZExGR5uX8", createdAt: "3903878747", updatedAt: "updatedAt")
     
 //        StudentAPIs.getUserData(student: student) { (success, error) in
 //            if success {
@@ -69,9 +69,12 @@ class LogInViewController: UIViewController {
 //            }
 //        }
      
-//        StudentAPIs.getStudentsWithALimit(studentLimit: 10) { (students, error) in
-//        
-//                }
+        StudentAPIs.getStudentsWithALimit(studentLimit: 3) { (students, error) in
+            if let error = error {
+                print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
+                return
+            }
+                }
     }
 
     

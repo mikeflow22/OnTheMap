@@ -12,15 +12,15 @@ import CoreLocation
 struct Student: Codable {
     let firstName: String
     let lastName: String
-    let latitude: Double
     let longitude: Double
+    let latitude: Double
     let mapString: String
     let mediaURL: String
-    
-    let createdAt: String
-    let objectId: String
     let uniqueKey: String
+    let objectId: String
+    let createdAt: String
     let updatedAt: String
+    
     
     var fullName: String {
         return "\(firstName) \(lastName)"

@@ -59,7 +59,7 @@ class StudentAPIs {
     }
     
     static func assignStudentToBody(_ student: Student) -> Student {
-        return Student(firstName: student.firstName, lastName: student.lastName, latitude: student.latitude, longitude: student.longitude, mapString: student.mapString, mediaURL: student.mediaURL, createdAt: student.createdAt, objectId: student.objectId, uniqueKey: student.uniqueKey, updatedAt: student.updatedAt)
+        return Student(firstName: student.firstName, lastName: student.lastName, longitude: student.longitude, latitude: student.latitude, mapString: student.mapString, mediaURL: student.mediaURL, uniqueKey: student.createdAt, objectId: student.objectId, createdAt: student.uniqueKey, updatedAt: student.updatedAt)
     }
     
     class func funcForAllGetMethods<ResponseType: Decodable>(url: URL, responseType: ResponseType.Type, completion: @escaping (ResponseType?, Error?) -> Void){
@@ -386,7 +386,7 @@ class StudentAPIs {
             }
             if let response = response {
                 var studentsWithFullNames = [Student]()
-                
+               
                 for student in response.results {
                     if student.firstName != "" && student.lastName != "" {
                         print("Student's name: \(student.fullName)")
