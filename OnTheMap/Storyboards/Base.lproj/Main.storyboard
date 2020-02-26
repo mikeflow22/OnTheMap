@@ -137,10 +137,10 @@
             </objects>
             <point key="canvasLocation" x="1896" y="440"/>
         </scene>
-        <!--View Controller-->
+        <!--Map View Controller-->
         <scene sceneID="SYu-wp-aTf">
             <objects>
-                <viewController id="xy8-WY-FVH" sceneMemberID="viewController">
+                <viewController id="xy8-WY-FVH" customClass="MapViewController" customModule="OnTheMap" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="6S6-Th-MxF">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -149,10 +149,22 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
                                 <items>
                                     <navigationItem title="ON THE MAP" id="lda-6W-zoO">
-                                        <barButtonItem key="leftBarButtonItem" title="LOGOUT" id="SOA-SS-m7h"/>
+                                        <barButtonItem key="leftBarButtonItem" title="LOGOUT" id="SOA-SS-m7h">
+                                            <connections>
+                                                <action selector="logout:" destination="xy8-WY-FVH" id="wXw-cB-u6k"/>
+                                            </connections>
+                                        </barButtonItem>
                                         <rightBarButtonItems>
-                                            <barButtonItem systemItem="add" id="6hE-zP-GPo"/>
-                                            <barButtonItem systemItem="refresh" id="2TL-mK-WVI"/>
+                                            <barButtonItem systemItem="add" id="6hE-zP-GPo">
+                                                <connections>
+                                                    <action selector="addStudentLocation:" destination="xy8-WY-FVH" id="XQR-C8-UIh"/>
+                                                </connections>
+                                            </barButtonItem>
+                                            <barButtonItem systemItem="refresh" id="2TL-mK-WVI">
+                                                <connections>
+                                                    <action selector="refresh:" destination="xy8-WY-FVH" id="cUQ-Yy-zjo"/>
+                                                </connections>
+                                            </barButtonItem>
                                         </rightBarButtonItems>
                                     </navigationItem>
                                 </items>
@@ -174,6 +186,9 @@
                         <viewLayoutGuide key="safeArea" id="tjM-cY-4pL"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="" selectedImage="icon_mapview-deselected" id="KJJ-LD-kej"/>
+                    <connections>
+                        <outlet property="mapView" destination="9iv-jO-zVZ" id="Miu-5W-Uel"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="feo-aY-4yC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
