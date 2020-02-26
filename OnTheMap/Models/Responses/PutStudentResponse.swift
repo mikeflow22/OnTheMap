@@ -9,5 +9,5 @@
 import Foundation
 
 struct PutStudentResponse: Codable {
-    let updatedAt: String
+    let updatedAt: String?
 }

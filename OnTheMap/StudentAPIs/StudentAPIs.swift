@@ -150,12 +150,12 @@ class StudentAPIs {
             
             let decoder = JSONDecoder()
             decoder.keyDecodingStrategy = .convertFromSnakeCase
+            let newData = data.subdata(in: 5..<data.count)
+            print(String(data: newData, encoding: .utf8)!)
             
             do {
                 //per Mentor's adding the newData property
-                let newData = data.subdata(in: 5..<data.count)
                 let responseObject = try decoder.decode(ResponseType.self, from: newData)
-                print(String(data: newData, encoding: .utf8)!)
                 
                 DispatchQueue.main.async {
                     completion(responseObject, nil)
@@ -241,18 +241,29 @@ class StudentAPIs {
     
     class func updateStudentLocation(student: Student, completion: @escaping (Bool, Error?) -> Void){
         
-        let body = assignStudentToBody(student)
-        print("This is the url for: \(#function) -> \(Endpoints.updateStudentLocation(body.objectId).url)")
-        var request = URLRequest(url: Endpoints.updateStudentLocation(body.objectId).url)
+//        let body = assignStudentToBody(student)
+        let postStudentRequest = PostStudentRequest(firstName: student.firstName, lastName: student.lastName, latitude: student.latitude, longitude: student.longitude, mapString: student.mapString, mediaURL: student.mediaURL, uniqueKey: student.uniqueKey)
+        
+        print("This is the url for: \(#function) -> \(Endpoints.updateStudentLocation(student.objectId).url)")
+        var request = URLRequest(url: Endpoints.updateStudentLocation(student.objectId).url)
         request.httpMethod = "PUT"
+        
+        //per mentors adding the first addValue method
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+
+//        //per mentors "when you make a  request to the server you will need to pass 2 parameters "x-parse-rest-api-key" and "x-parse-application-id" to the header.
+        request.addValue(ParseHeaderKeys.APIKey, forHTTPHeaderField: ParseHeaderValues.APIKeyValues)
+        request.addValue(ParseHeaderKeys.ApplicationID, forHTTPHeaderField: ParseHeaderValues.ApplicationIDValues)
+
         
         let encoder = JSONEncoder()
         encoder.keyEncodingStrategy = .convertToSnakeCase
         
         do {
-            request.httpBody = try encoder.encode(body)
+            request.httpBody = try encoder.encode(postStudentRequest)
         } catch  {
+            print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
             print("Error in: \(#function)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)")
             DispatchQueue.main.async {
                 completion(false, error)
@@ -282,11 +293,12 @@ class StudentAPIs {
             
             do {
                 let responseObject = try decoder.decode(PutStudentResponse.self, from: data)
-                print("student was updated at:  \(responseObject.updatedAt)")
+                print("student was updated at:  \(String(describing: responseObject.updatedAt))")
                 DispatchQueue.main.async {
                     completion(true,nil)
                 }
             } catch  {
+                print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
                 print("Error in: \(#function)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)")
                 DispatchQueue.main.async {
                     completion(false, nil)
@@ -296,31 +308,13 @@ class StudentAPIs {
         task.resume()
     }
     
+    //function doesn't work
     class func postStudentLocation(student: Student, completion: @escaping (Bool, Error?) -> Void){
-        let body =  assignStudentToBody(student)
+        let postRequest = PostStudentRequest(firstName: student.firstName, lastName: student.lastName, latitude: student.latitude, longitude: student.longitude, mapString: student.mapString, mediaURL: student.mediaURL, uniqueKey: student.uniqueKey)
         
-        var request = URLRequest(url: Endpoints.getAllStudents.url)
         print("this is the url for function: \(#function) -> url:  \(Endpoints.getAllStudents.url)")
-        request.httpMethod = "POST"
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        let encoder = JSONEncoder()
-        encoder.keyEncodingStrategy = .convertToSnakeCase
-        
-        do {
-            request.httpBody = try encoder.encode(body)
-        } catch  {
-            print("Error in: \(#function)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)")
-            DispatchQueue.main.async {
-                completion(false, error)
-            }
-        }
-        
-        
-        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
-            if let response = response as? HTTPURLResponse {
-                print("Response in postStudentLocation(): \(response.statusCode)")
-            }
+        funcForAllPostMethods(url: Endpoints.getAllStudents.url, responseType: StudentPostResponse.self, body: postRequest) { (responseObject, error) in
             if let error = error {
                 print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
                 DispatchQueue.main.async {
@@ -329,34 +323,18 @@ class StudentAPIs {
                 return
             }
             
-            guard let data =  data else {
-                print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
+            if let returnedObject = responseObject {
+                print("This is the object's id: \(returnedObject.objectId)")
                 DispatchQueue.main.async {
-                    completion(false, error)
-                }
-                return
-            }
-            
-            print(String(data: data, encoding: .utf8)!)
-            let decoder = JSONDecoder()
-            //            decoder.keyDecodingStrategy = .convertFromSnakeCase
-            
-            do {
-                let object = try decoder.decode(StudentPostResponse.self, from: data)
-                let datay = try decoder.decode(String.self, from: data)
-                print("Object's creation date: \(object.createdAt)")
-                DispatchQueue.main.async {
-                    print("datay: \(datay)")
                     completion(true, nil)
                 }
-            } catch  {
-                print("Error in: \(#function)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)")
+            } else {
+                print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
                 DispatchQueue.main.async {
                     completion(false, error)
                 }
             }
         }
-        task.resume()
     }
     
     class func getStudentsWithALimit(studentLimit limit: Int, completion: @escaping ([Student]?, Error?) -> Void){
