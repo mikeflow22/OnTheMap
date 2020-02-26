@@ -16,8 +16,13 @@ class LogInViewController: UIViewController {
     @IBOutlet weak var loginButtonProperties: UIButton!
     @IBOutlet weak var signupButtonProperties: UIButton!
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
     
-    func unwrapTextFields(emailTextField: UITextField, passwordTextField: UITextField) -> (emailTF: String, pwTF: String){
+    }
+
+    //MARK: - Methods
+    private func unwrapTextFields(emailTextField: UITextField, passwordTextField: UITextField) -> (emailTF: String, pwTF: String){
         guard let email = emailTextField.text, !email.isEmpty, let password = passwordTextField.text, !password.isEmpty else {
             print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
             return ("","")
@@ -25,79 +30,53 @@ class LogInViewController: UIViewController {
         return (email, password)
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        let student = Student(firstName: "John", lastName: "Doe", longitude: -122.032182, latitude: 37.322998, mapString: "Cupertino, CA", mediaURL: "https://udacity.com", uniqueKey: "createdAt", objectId: "8ZExGR5uX8", createdAt: "3903878747", updatedAt: "updatedAt")
+    func showLoginFailure(message: String) {
+           let alertVC = UIAlertController(title: "Login Failed", message: message, preferredStyle: .alert)
+           alertVC.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+           show(alertVC, sender: nil)
+       }
     
-//        StudentAPIs.getUserData(student: student) { (success, error) in
-//            if success {
-//                print("Success in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
-//                DispatchQueue.main.async {
-//
-//                }
-//            } else {
-//                print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
-//                return
-//            }
-//        }
-        
-     
-        
-//                StudentAPIs.updateStudentLocation(student: student) { (success, error) in
-//
-//                    if success {
-//                        print("Success in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
-//                        DispatchQueue.main.async {
-//
-//                        }
-//                    } else {
-//                        print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
-//                        return
-//                    }
-//                }
-     
-        
-//        StudentAPIs.postStudentLocation(student: student) { (success, error) in
-//            if success {
-//                print("Success in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
-//                DispatchQueue.main.async {
-//
-//                }
-//            } else {
-//                print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
-//                return
-//            }
-//        }
-     
-        StudentAPIs.getStudentsWithALimit(studentLimit: 3) { (students, error) in
-            if let error = error {
-                print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
-                return
-            }
-                }
+    func triggerSegue(){
+        self.performSegue(withIdentifier: "tabBarSegue", sender: nil)
     }
-
+    
+    func handleLoginResponse(success: Bool, error: ErrorStruct?){
+        if success {
+            print("This is the sessionID: \(String(describing: StudentAPIs.Auth.sessionId))")
+            print("Success in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
+            DispatchQueue.main.async {
+                //segue
+                self.triggerSegue()
+            }
+        } else {
+            DispatchQueue.main.async {
+                self.showLoginFailure(message: error?.localizedDescription ?? "something went wrong here: \(#function)")
+            }
+        }
+    }
     
     //MARK: - IBActions
     @IBAction func loginButtonTapped(_ sender: UIButton) {
        let loginInfo = unwrapTextFields(emailTextField: emailTextField, passwordTextField: passwordTextField)
         
-        StudentAPIs.login(with: loginInfo.emailTF, password: loginInfo.pwTF) { (success, error) in
-            if let error = error {
-                print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
-                return
-            }
-            
-               if success {
-                   print("Success in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
-                   DispatchQueue.main.async {
-
-                   }
-               } else {
-                   print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
-                   return
-               }
-           }
+        StudentAPIs.login(with: loginInfo.emailTF, password: loginInfo.pwTF, completion: self.handleLoginResponse(success:error:))
+        
+//        StudentAPIs.login(with: loginInfo.emailTF, password: loginInfo.pwTF) { (success, error) in
+//            if let error = error {
+//                print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
+//                return
+//            }
+//
+//               if success {
+//                   print("Success in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
+//                   DispatchQueue.main.async {
+//
+//                   }
+//               } else {
+//                   print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
+//                   return
+//               }
+//           }
     }
     
     @IBAction func signUpButtonTapped(_ sender: UIButton) {

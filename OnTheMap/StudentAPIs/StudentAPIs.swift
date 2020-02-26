@@ -88,11 +88,11 @@ class StudentAPIs {
             
             let decoder = JSONDecoder()
             decoder.keyDecodingStrategy = .convertFromSnakeCase
-            let newData = data.subdata(in: 5..<data.count)
-            print("This is the data thats printed: \(String(data: newData, encoding: .utf8)!)")
+//            let newData = data.subdata(in: 5..<data.count)
+//            print("This is the data thats printed: \(String(data: newData, encoding: .utf8)!)")
             
             do {
-                let responseObject =  try decoder.decode(ResponseType.self, from: newData)
+                let responseObject =  try decoder.decode(ResponseType.self, from: data)
                 DispatchQueue.main.async {
                     completion(responseObject, nil)
                 }
@@ -151,7 +151,8 @@ class StudentAPIs {
                     do {
                         let message = try JSONDecoder().decode(ErrorStruct.self, from: newData)
                         print("Status of Error: \(message.status)\n Error message: \(message.error)")
-                        completion(nil, ErrorStruct(status: message.status, error: message.error))
+                        let myError = ErrorStruct(status: message.status, error: message.error)
+                        completion(nil, myError)
                         return
                     } catch  {
                         print("Error in: \(#function)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)")
@@ -209,12 +210,13 @@ class StudentAPIs {
         }
     }
     
-    class func login(with email: String, password: String, completion: @escaping (Bool, Error?) -> ()){
+    //works
+    class func login(with email: String, password: String, completion: @escaping (Bool, ErrorStruct?) -> ()){
         let url = Endpoints.session.url
         let loginRequestBody = LoginRequest(udacity: LoginData(username: email, password: password))
         
-        funcForAllPostMethods(url: url, responseType: SessionResponse.self, body: loginRequestBody) { (responseObject, error) in
-            if let error = error {
+        funcForAllPostMethods(url: url, responseType: SessionResponse.self, body: loginRequestBody) { (responseObject, error ) in
+            if let error = error as? ErrorStruct {
                 print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
                 completion(false, error)
                 return
@@ -232,12 +234,13 @@ class StudentAPIs {
             } else {
                 print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
                 DispatchQueue.main.async {
-                    completion(false, nil)
+                    completion(false, error as? ErrorStruct)
                 }
             }
         }
     }
     
+    //works
     class func logout(completion: @escaping (Bool, Error?) -> Void){
         var request = URLRequest(url: Endpoints.session.url)
         print("This is the url in function: \(#function) -> url: \(Endpoints.session.url)")
@@ -375,6 +378,7 @@ class StudentAPIs {
         }
     }
     
+    //works
     class func getStudentsWithALimit(studentLimit limit: Int, completion: @escaping ([Student]?, Error?) -> Void){
         funcForAllGetMethods(url: Endpoints.limitStudentSearch(limit).url, responseType: TopLevelDictionary.self) { (response, error) in
             if let error = error {
@@ -406,6 +410,7 @@ class StudentAPIs {
         }
     }
     
+    //works
     class func getAllStudents(completion: @escaping ([Student]?, Error?) -> Void){
         funcForAllGetMethods(url: Endpoints.getAllStudents.url, responseType: TopLevelDictionary.self) { (response, error) in
             if let error = error {

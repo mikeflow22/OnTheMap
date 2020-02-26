@@ -87,6 +87,7 @@
                         <outlet property="loginButtonProperties" destination="Jk5-Hu-dvW" id="6Az-zK-qxC"/>
                         <outlet property="passwordTextField" destination="ANq-Sn-XVZ" id="FLG-Xy-h4V"/>
                         <outlet property="signupButtonProperties" destination="OH6-jl-uMO" id="rBp-dd-QgH"/>
+                        <segue destination="QKj-xx-0v7" kind="show" identifier="tabBarSegue" id="NaT-MO-7YM"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -98,11 +99,11 @@
             <objects>
                 <viewController id="PfY-t1-O1G" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Vi2-SZ-itV">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="k6e-up-Ql6">
-                                <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
                                 <items>
                                     <navigationItem title="ON THE MAP" id="12k-kZ-dNF">
                                         <barButtonItem key="leftBarButtonItem" title="LOGOUT" id="Ayb-i9-jiD"/>
@@ -114,7 +115,7 @@
                                 </items>
                             </navigationBar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="DQb-rm-clu">
-                                <rect key="frame" x="0.0" y="88" width="414" height="725"/>
+                                <rect key="frame" x="0.0" y="56" width="414" height="703"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                             </tableView>
                         </subviews>
@@ -141,11 +142,11 @@
             <objects>
                 <viewController id="xy8-WY-FVH" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="6S6-Th-MxF">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4aD-nQ-dbI">
-                                <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
                                 <items>
                                     <navigationItem title="ON THE MAP" id="lda-6W-zoO">
                                         <barButtonItem key="leftBarButtonItem" title="LOGOUT" id="SOA-SS-m7h"/>
@@ -157,7 +158,7 @@
                                 </items>
                             </navigationBar>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="9iv-jO-zVZ">
-                                <rect key="frame" x="0.0" y="88" width="414" height="725"/>
+                                <rect key="frame" x="0.0" y="56" width="414" height="703"/>
                             </mapView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -181,7 +182,8 @@
         <!--Tab Bar Controller-->
         <scene sceneID="rei-8c-UoH">
             <objects>
-                <tabBarController id="QKj-xx-0v7" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="TabBarController" id="QKj-xx-0v7" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="f73-UV-mQq"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="q8h-iV-JYh">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
