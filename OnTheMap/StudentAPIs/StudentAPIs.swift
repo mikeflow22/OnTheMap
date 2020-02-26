@@ -33,12 +33,14 @@ class StudentAPIs {
         static let limitQuery = "?limit="
         static let uniqueKeyQuery = "?uniqueKey="
         static let sessionParam = "https://onthemap-api.udacity.com/v1/session"
+        static let getUsersparam = "https://onthemap-api.udacity.com/v1/users/"
         
         case getAllStudents
         case limitStudentSearch(Int)
         case searchWithUniqueKey(String)
         case updateStudentLocation(String)
         case session
+        case getUsers(String)
         
         var stringValue: String {
             switch self {
@@ -47,6 +49,7 @@ class StudentAPIs {
             case .searchWithUniqueKey(let userId):  return  Endpoints.base + Endpoints.uniqueKeyQuery + "\(userId)"
             case .updateStudentLocation(let objectId): return Endpoints.base + "/\(objectId)"
             case .session: return Endpoints.sessionParam
+            case .getUsers(let userId): return Endpoints.getUsersparam + "\(userId)"
             }
         }
         
@@ -171,9 +174,25 @@ class StudentAPIs {
         task.resume()
     }
     
-    //    class func getUserData(student: Student, completion: @)
-    //
-    
+    //function doesn't work
+    class func getUserData(student: Student, completion: @escaping(Bool, Error?) -> Void){
+        let url = Endpoints.getUsers(student.uniqueKey).url
+        funcForAllGetMethods(url: url, responseType: GetUserResponse.self) { (responseObject, error) in
+            if let error = error {
+                print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
+                completion(false, error)
+                return
+            }
+            
+            if let responseObject = responseObject {
+                print("This is the responseobject: \(responseObject.user.firstName)")
+            } else {
+                print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
+                completion(false, error)
+            }
+        }
+    }
+   
     class func login(with email: String, password: String, completion: @escaping (Bool, Error?) -> ()){
         let url = Endpoints.session.url
         let loginRequestBody = LoginRequest(udacity: LoginData(username: email, password: password))
@@ -239,9 +258,9 @@ class StudentAPIs {
         task.resume()
     }
     
+    //function  doesn't work
     class func updateStudentLocation(student: Student, completion: @escaping (Bool, Error?) -> Void){
         
-//        let body = assignStudentToBody(student)
         let postStudentRequest = PostStudentRequest(firstName: student.firstName, lastName: student.lastName, latitude: student.latitude, longitude: student.longitude, mapString: student.mapString, mediaURL: student.mediaURL, uniqueKey: student.uniqueKey)
         
         print("This is the url for: \(#function) -> \(Endpoints.updateStudentLocation(student.objectId).url)")
@@ -256,7 +275,6 @@ class StudentAPIs {
         request.addValue(ParseHeaderKeys.APIKey, forHTTPHeaderField: ParseHeaderValues.APIKeyValues)
         request.addValue(ParseHeaderKeys.ApplicationID, forHTTPHeaderField: ParseHeaderValues.ApplicationIDValues)
 
-        
         let encoder = JSONEncoder()
         encoder.keyEncodingStrategy = .convertToSnakeCase
         

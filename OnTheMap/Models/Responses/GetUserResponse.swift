@@ -8,13 +8,13 @@
 
 import Foundation
 
-struct UserTopLevelDictionary: Codable {
+struct GetUserResponse: Codable {
     let user: UserInformation
 }
 
 struct UserInformation: Codable {
     let lastName: String
-    let firstname: String
+    let firstName: String
     let linkedinUrl: String
     let imageUrl: String
 }
