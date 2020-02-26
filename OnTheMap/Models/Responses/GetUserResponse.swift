@@ -13,8 +13,8 @@ struct GetUserResponse: Codable {
 }
 
 struct UserInformation: Codable {
-    let lastName: String
-    let firstName: String
-    let linkedinUrl: String
-    let imageUrl: String
+    let lastName: String?
+    let firstName: String?
+    let linkedinUrl: String?
+    let imageUrl: String?
 }

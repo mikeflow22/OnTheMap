@@ -88,14 +88,16 @@ class StudentAPIs {
             
             let decoder = JSONDecoder()
             decoder.keyDecodingStrategy = .convertFromSnakeCase
+            let newData = data.subdata(in: 5..<data.count)
+            print("This is the data thats printed: \(String(data: newData, encoding: .utf8)!)")
             
             do {
-                let responseObject =  try decoder.decode(ResponseType.self, from: data)
+                let responseObject =  try decoder.decode(ResponseType.self, from: newData)
                 DispatchQueue.main.async {
                     completion(responseObject, nil)
                 }
-                
             } catch  {
+                print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
                 print("Error in: \(#function)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)")
                 DispatchQueue.main.async {
                     completion(nil, error)
@@ -131,8 +133,30 @@ class StudentAPIs {
         }
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data else {
+                print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
+                DispatchQueue.main.async {
+                    completion(nil, error)
+                }
+                return
+            }
+            
+            let newData = data.subdata(in: 5..<data.count)
+            print("This is the data thats printed: \(String(data: newData, encoding: .utf8)!)")
+            
             if let response = response as? HTTPURLResponse {
                 print("Response: \(response.statusCode)")
+                if response.statusCode > 400 {
+                    print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
+                    do {
+                        let message = try JSONDecoder().decode(ErrorStruct.self, from: newData)
+                        print("Status of Error: \(message.status)\n Error message: \(message.error)")
+                        completion(nil, ErrorStruct(status: message.status, error: message.error))
+                        return
+                    } catch  {
+                        print("Error in: \(#function)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)")
+                    }
+                }
             }
             
             if let error = error {
@@ -141,20 +165,8 @@ class StudentAPIs {
                 return
             }
             
-            guard let data = data else {
-                print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
-                
-                DispatchQueue.main.async {
-                    completion(nil, error)
-                }
-                
-                return
-            }
-            
             let decoder = JSONDecoder()
             decoder.keyDecodingStrategy = .convertFromSnakeCase
-            let newData = data.subdata(in: 5..<data.count)
-            print(String(data: newData, encoding: .utf8)!)
             
             do {
                 //per Mentor's adding the newData property
@@ -169,12 +181,13 @@ class StudentAPIs {
                 DispatchQueue.main.async {
                     completion(nil, error)
                 }
+                return
             }
         }
         task.resume()
     }
     
-    //function doesn't work
+    //function works with optionals
     class func getUserData(student: Student, completion: @escaping(Bool, Error?) -> Void){
         let url = Endpoints.getUsers(student.uniqueKey).url
         funcForAllGetMethods(url: url, responseType: GetUserResponse.self) { (responseObject, error) in
@@ -185,22 +198,25 @@ class StudentAPIs {
             }
             
             if let responseObject = responseObject {
-                print("This is the responseobject: \(responseObject.user.firstName)")
+                print("This is the responseobject firstName: \(String(describing: responseObject.user.firstName))")
+                print("This is the responseobject lastName: \(String(describing: responseObject.user.lastName))")
+                print("This is the responseobject imageURL: \(String(describing: responseObject.user.imageUrl))")
+                print("This is the responseobject linkedinURL: \(String(describing: responseObject.user.linkedinUrl))")
             } else {
                 print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
                 completion(false, error)
             }
         }
     }
-   
+    
     class func login(with email: String, password: String, completion: @escaping (Bool, Error?) -> ()){
         let url = Endpoints.session.url
         let loginRequestBody = LoginRequest(udacity: LoginData(username: email, password: password))
-
+        
         funcForAllPostMethods(url: url, responseType: SessionResponse.self, body: loginRequestBody) { (responseObject, error) in
             if let error = error {
                 print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
-               completion(false, error)
+                completion(false, error)
                 return
             }
             
@@ -209,7 +225,7 @@ class StudentAPIs {
                 print("this is the sessionId we got back from loggin in: \(String(describing: Auth.sessionId))")
                 
                 Auth.expiration = responseObject.session?.expeiration
-                 print("this is the user's expiration date we got back from loggin in: \(String(describing: Auth.expiration))")
+                print("this is the user's expiration date we got back from loggin in: \(String(describing: Auth.expiration))")
                 DispatchQueue.main.async {
                     completion(true, nil)
                 }
@@ -270,11 +286,11 @@ class StudentAPIs {
         //per mentors adding the first addValue method
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-
-//        //per mentors "when you make a  request to the server you will need to pass 2 parameters "x-parse-rest-api-key" and "x-parse-application-id" to the header.
+        
+        //        //per mentors "when you make a  request to the server you will need to pass 2 parameters "x-parse-rest-api-key" and "x-parse-application-id" to the header.
         request.addValue(ParseHeaderKeys.APIKey, forHTTPHeaderField: ParseHeaderValues.APIKeyValues)
         request.addValue(ParseHeaderKeys.ApplicationID, forHTTPHeaderField: ParseHeaderValues.ApplicationIDValues)
-
+        
         let encoder = JSONEncoder()
         encoder.keyEncodingStrategy = .convertToSnakeCase
         
@@ -305,12 +321,16 @@ class StudentAPIs {
                 completion(false, error)
                 return
             }
+            
             print(String(data: data, encoding: .utf8)!)
             let decoder = JSONDecoder()
             decoder.keyDecodingStrategy = .convertFromSnakeCase
             
+            let newData = data.subdata(in: 5..<data.count)
+            print("This is the data thats printed: \(String(data: newData, encoding: .utf8)!)")
+            
             do {
-                let responseObject = try decoder.decode(PutStudentResponse.self, from: data)
+                let responseObject = try decoder.decode(PutStudentResponse.self, from: newData)
                 print("student was updated at:  \(String(describing: responseObject.updatedAt))")
                 DispatchQueue.main.async {
                     completion(true,nil)
