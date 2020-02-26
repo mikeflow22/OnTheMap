@@ -146,9 +146,11 @@ class StudentAPIs {
             
             if let response = response as? HTTPURLResponse {
                 print("Response: \(response.statusCode)")
+                //if response is greater than 400 then we have an error
                 if response.statusCode > 400 {
                     print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
                     do {
+                        //decode the data we got back into our errorStruct model so we can present the  error on the viewController
                         let message = try JSONDecoder().decode(ErrorStruct.self, from: newData)
                         print("Status of Error: \(message.status)\n Error message: \(message.error)")
                         let myError = ErrorStruct(status: message.status, error: message.error)
@@ -210,7 +212,7 @@ class StudentAPIs {
         }
     }
     
-    //works
+    //works - Use ErrorStruct to display the response we get back if its > 400
     class func login(with email: String, password: String, completion: @escaping (Bool, ErrorStruct?) -> ()){
         let url = Endpoints.session.url
         let loginRequestBody = LoginRequest(udacity: LoginData(username: email, password: password))

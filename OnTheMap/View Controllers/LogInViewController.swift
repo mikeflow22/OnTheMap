@@ -58,39 +58,12 @@ class LogInViewController: UIViewController {
     //MARK: - IBActions
     @IBAction func loginButtonTapped(_ sender: UIButton) {
        let loginInfo = unwrapTextFields(emailTextField: emailTextField, passwordTextField: passwordTextField)
-        
         StudentAPIs.login(with: loginInfo.emailTF, password: loginInfo.pwTF, completion: self.handleLoginResponse(success:error:))
-        
-//        StudentAPIs.login(with: loginInfo.emailTF, password: loginInfo.pwTF) { (success, error) in
-//            if let error = error {
-//                print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
-//                return
-//            }
-//
-//               if success {
-//                   print("Success in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
-//                   DispatchQueue.main.async {
-//
-//                   }
-//               } else {
-//                   print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
-//                   return
-//               }
-//           }
     }
     
     @IBAction func signUpButtonTapped(_ sender: UIButton) {
-        StudentAPIs.login(with: "junkboxemail22@yahoo.com", password: "Udacity22") { (success, error) in
-                 if success {
-                     print("Success in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
-                     DispatchQueue.main.async {
-
-                     }
-                 } else {
-                     print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
-                     return
-                 }
-             }
+        let loginInfo = unwrapTextFields(emailTextField: emailTextField, passwordTextField: passwordTextField)
+         StudentAPIs.login(with: loginInfo.emailTF, password: loginInfo.pwTF, completion: self.handleLoginResponse(success:error:))
     }
     
 }
