@@ -17,6 +17,7 @@ class AddLocationViewController: UIViewController {
         }
     }
     var mediaURL: String?
+    var addressString: String?
     
     @IBOutlet weak var locationTextField: UITextField!
     @IBOutlet weak var mediaURLTexField: UITextField!
@@ -51,6 +52,7 @@ class AddLocationViewController: UIViewController {
             return
         }
         self.mediaURL = link
+        self.addressString = location
         
         reverseGeoCodeString(fromLocation: location)
     }
@@ -60,12 +62,14 @@ class AddLocationViewController: UIViewController {
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "toDetailVC" {
-            guard let destinationVC = segue.destination as? DetailViewController, let coordinate = self.coordinate, let mediaURL = self.mediaURL else {
+            guard let destinationVC = segue.destination as? DetailViewController, let coordinate = self.coordinate, let mediaURL = self.mediaURL, let address =  self.addressString else {
                 print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
                 return
             }
+            
             destinationVC.coordinate = coordinate
             destinationVC.mediaURL = mediaURL
+            destinationVC.addressString = address
         }
     }
 }
