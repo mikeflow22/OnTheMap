@@ -285,7 +285,6 @@
                                         </state>
                                         <connections>
                                             <action selector="findLocation:" destination="Is3-YU-ZRG" eventType="touchUpInside" id="3w9-jA-wRt"/>
-                                            <segue destination="VZJ-Pj-BPe" kind="show" identifier="toDetailVC" id="f9W-Ot-flD"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -318,6 +317,7 @@
                         <outlet property="findLocationButtonProperties" destination="m9P-PI-pTp" id="OYW-vE-j7u"/>
                         <outlet property="locationTextField" destination="2AK-Zc-FPU" id="95I-k2-s2F"/>
                         <outlet property="mediaURLTexField" destination="eGo-oL-MXj" id="XSY-z9-n3Z"/>
+                        <segue destination="VZJ-Pj-BPe" kind="show" identifier="toDetailVC" id="rxT-Aa-NFh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yu0-Th-ALs" sceneMemberID="firstResponder"/>

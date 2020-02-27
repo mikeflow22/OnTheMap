@@ -10,7 +10,9 @@ import UIKit
 import MapKit
 
 class DetailViewController: UIViewController {
-
+    var coordinate: CLLocationCoordinate2D?
+    var mediaURL: String?
+    
     @IBOutlet weak var mapView: MKMapView!
     
     override func viewDidLoad() {
