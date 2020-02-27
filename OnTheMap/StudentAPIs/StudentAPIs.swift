@@ -243,7 +243,7 @@ class StudentAPIs {
     }
     
     //works
-    class func logout(completion: @escaping (Bool, Error?) -> Void){
+    class func logout(completion: @escaping (Bool, ErrorStruct?) -> Void){
         var request = URLRequest(url: Endpoints.session.url)
         print("This is the url in function: \(#function) -> url: \(Endpoints.session.url)")
         
@@ -263,7 +263,7 @@ class StudentAPIs {
                 print("Response deleting session: \(response.statusCode)")
             }
             
-            if let error = error {
+            if let error = error as? ErrorStruct {
                 print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
                 completion(false, error)
                 return
