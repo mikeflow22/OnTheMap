@@ -12,39 +12,33 @@ class StudentListViewController: UIViewController {
     
     var students: [Student]? {
         didSet {
-            guard let students = students else {
+            if students != nil {
+                self.tableView.reloadData()
+            } else {
                 print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
                 return
             }
-            self.tableView.reloadData()
         }
     }
+    
     @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
-        get100Students()
+        orderStudentsArray()
     }
     
-    func get100Students(){
+    func orderStudentsArray(){
         NetworkController.shared.orderStudentsInList { (error) in
             if let error = error {
                 print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
                 return
             }
+            //if this worked then we should have students in network controller
             self.students = NetworkController.shared.orderedStudents
         }
-        
-//        NetworkController.shared.getStudentsWithALimit(studentLimit: 100) { (error) in
-//            if let error = error {
-//                print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
-//                return
-//            } else {
-//                self.students =  NetworkController.shared.students
-//            }
-//        }
     }
     
     @IBAction func logout(_ sender: UIBarButtonItem) {
@@ -56,7 +50,7 @@ class StudentListViewController: UIViewController {
         self.students?.removeAll()
         
         //network call to retrieve students
-        get100Students()
+        orderStudentsArray()
     }
     
     @IBAction func addStudentLocation(_ sender: UIBarButtonItem) {
@@ -84,13 +78,26 @@ extension StudentListViewController: UITableViewDelegate,  UITableViewDataSource
         
         let student = students?[indexPath.row]
         cell.textLabel?.text = student?.fullName
-//        cell.detailTextLabel?.text = student?.mediaURL
-        cell.detailTextLabel?.text = student?.createdAt
+        cell.detailTextLabel?.text = student?.mediaURL
+        
+        //to test to see if the tableView is sorted properly
+//        cell.detailTextLabel?.text = student?.createdAt
         
         cell.imageView?.image = UIImage(named: "icon_pin")
         
         return  cell
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if let student = students?[indexPath.row], let url = URL(string: student.mediaURL) {
+            let app = UIApplication.shared
+            
+            app.open(url, options: [:], completionHandler: nil)
+        } else {
+            print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
+            return
+        }
+        
+    }
     
 }
