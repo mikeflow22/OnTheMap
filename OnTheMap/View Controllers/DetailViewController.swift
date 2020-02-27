@@ -18,7 +18,6 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         mapView.delegate = self
-        // Do any additional setup after loading the view.
     }
     
 
@@ -35,6 +34,3 @@ class DetailViewController: UIViewController {
     */
 }
 
-extension DetailViewController: MKMapViewDelegate {
-    
-}
