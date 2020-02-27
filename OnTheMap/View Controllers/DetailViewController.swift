@@ -52,7 +52,7 @@ class DetailViewController: UIViewController {
                }
         let student = Student(firstName: "Hottest", lastName: "guy ever", longitude: coordinate.longitude, latitude: coordinate.latitude, mapString: addressString, mediaURL: mediaURL, uniqueKey: UUID().uuidString, objectId: "00000001", createdAt: Date().stringFromDate(), updatedAt: Date().stringFromDate())
         
-        StudentAPIs.postStudentLocation(student: student) { (success, error) in
+        NetworkController.shared.postStudentLocation(student: student) { (success, error) in
             if let error = error {
                 print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
                 return

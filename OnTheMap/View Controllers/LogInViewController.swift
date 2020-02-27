@@ -42,7 +42,7 @@ class LogInViewController: UIViewController {
     
     func handleLoginResponse(success: Bool, error: ErrorStruct?){
         if success {
-            print("This is the sessionID: \(String(describing: StudentAPIs.Auth.sessionId))")
+            print("This is the sessionID: \(String(describing: NetworkController.Auth.sessionId))")
             print("Success in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
             DispatchQueue.main.async {
                 //segue
@@ -58,12 +58,12 @@ class LogInViewController: UIViewController {
     //MARK: - IBActions
     @IBAction func loginButtonTapped(_ sender: UIButton) {
        let loginInfo = unwrapTextFields(emailTextField: emailTextField, passwordTextField: passwordTextField)
-        StudentAPIs.login(with: loginInfo.emailTF, password: loginInfo.pwTF, completion: self.handleLoginResponse(success:error:))
+        NetworkController.shared.login(with: loginInfo.emailTF, password: loginInfo.pwTF, completion: self.handleLoginResponse(success:error:))
     }
     
     @IBAction func signUpButtonTapped(_ sender: UIButton) {
         let loginInfo = unwrapTextFields(emailTextField: emailTextField, passwordTextField: passwordTextField)
-         StudentAPIs.login(with: loginInfo.emailTF, password: loginInfo.pwTF, completion: self.handleLoginResponse(success:error:))
+        NetworkController.shared.login(with: loginInfo.emailTF, password: loginInfo.pwTF, completion: self.handleLoginResponse(success:error:))
     }
     
 }

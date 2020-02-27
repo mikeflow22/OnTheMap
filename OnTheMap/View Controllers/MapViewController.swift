@@ -31,18 +31,12 @@ class MapViewController: UIViewController {
     }
     
     func get100Students(){
-        StudentAPIs.getStudentsWithALimit(studentLimit: 100) { (students, error) in
+        NetworkController.shared.getStudentsWithALimit(studentLimit: 100) { (error) in
             if let error = error {
                 print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
                 return
-            }
-            
-            guard let returnedStudents = students  else {
-                print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
-                return
-            }
-            DispatchQueue.main.async {
-                self.students = returnedStudents
+            } else {
+                self.students = NetworkController.shared.students
             }
         }
     }
@@ -67,7 +61,7 @@ class MapViewController: UIViewController {
     }
         
     @IBAction func logout(_ sender: UIBarButtonItem) {
-        StudentAPIs.logout(completion: self.handleLogoutResponse(success:error:))
+        NetworkController.shared.logout(completion: self.handleLogoutResponse(success:error:))
     }
         
     @IBAction func refresh(_ sender: UIBarButtonItem) {
