@@ -18,6 +18,7 @@ class AddLocationViewController: UIViewController {
     }
     var mediaURL: String?
     var addressString: String?
+    var country = ""
     
     @IBOutlet weak var locationTextField: UITextField!
     @IBOutlet weak var mediaURLTexField: UITextField!
@@ -36,12 +37,13 @@ class AddLocationViewController: UIViewController {
             }
             
             // the closure returns an array of places matching the address from the string
-            guard let placeLocation = placemarks?.first, let lat = placeLocation.location?.coordinate.latitude, let long = placeLocation.location?.coordinate.longitude else {
+            guard let placeLocation = placemarks?.first, let lat = placeLocation.location?.coordinate.latitude, let long = placeLocation.location?.coordinate.longitude, let country = placeLocation.country else {
                 print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
                 return
             }
             DispatchQueue.main.async {
                 self.coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
+                self.country = country
             }
         }
     }
@@ -69,7 +71,7 @@ class AddLocationViewController: UIViewController {
             
             destinationVC.coordinate = coordinate
             destinationVC.mediaURL = mediaURL
-            destinationVC.addressString = address
+            destinationVC.addressString = "\(address), \(country)"
         }
     }
 }
