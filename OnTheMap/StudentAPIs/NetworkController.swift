@@ -11,6 +11,8 @@ import Foundation
 class NetworkController {
     static let shared = NetworkController()
     var students = [Student]()
+    var orderedStudents = [Student]()
+    
     struct Auth {
         static var sessionId: String?
         static var accountKey: String?
@@ -158,6 +160,31 @@ class NetworkController {
             }
         }
         task.resume()
+    }
+    
+    func orderStudentsInList(completion: @escaping (ErrorStruct?) -> Void){
+        funcForAllGetMethods(url: StudentAPIs.Endpoints.order.url, responseType: TopLevelDictionary.self) { (responseObject, error) in
+            if let error = error {
+                print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
+                DispatchQueue.main.async {
+                    completion(error as? ErrorStruct)
+                }
+                return
+            }
+            
+            if let responseObject = responseObject {
+                DispatchQueue.main.async {
+                    self.orderedStudents = responseObject.results
+                    completion(nil)
+                }
+            } else {
+                print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
+                DispatchQueue.main.async {
+                    completion(error as? ErrorStruct)
+                }
+                return
+            }
+        }
     }
     
     //function works with optionals

@@ -21,7 +21,6 @@ struct Student: Codable {
     let createdAt: String
     let updatedAt: String
     
-    
     var fullName: String {
         return "\(firstName) \(lastName)"
     }

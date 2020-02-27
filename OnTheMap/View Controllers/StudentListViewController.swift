@@ -29,14 +29,22 @@ class StudentListViewController: UIViewController {
     }
     
     func get100Students(){
-        NetworkController.shared.getStudentsWithALimit(studentLimit: 100) { (error) in
+        NetworkController.shared.orderStudentsInList { (error) in
             if let error = error {
                 print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
                 return
-            } else {
-                self.students =  NetworkController.shared.students
             }
+            self.students = NetworkController.shared.orderedStudents
         }
+        
+//        NetworkController.shared.getStudentsWithALimit(studentLimit: 100) { (error) in
+//            if let error = error {
+//                print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
+//                return
+//            } else {
+//                self.students =  NetworkController.shared.students
+//            }
+//        }
     }
     
     @IBAction func logout(_ sender: UIBarButtonItem) {
@@ -76,7 +84,9 @@ extension StudentListViewController: UITableViewDelegate,  UITableViewDataSource
         
         let student = students?[indexPath.row]
         cell.textLabel?.text = student?.fullName
-        cell.detailTextLabel?.text = student?.mediaURL
+//        cell.detailTextLabel?.text = student?.mediaURL
+        cell.detailTextLabel?.text = student?.createdAt
+        
         cell.imageView?.image = UIImage(named: "icon_pin")
         
         return  cell

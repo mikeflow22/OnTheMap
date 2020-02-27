@@ -19,6 +19,7 @@ class StudentAPIs {
         static let uniqueKeyQuery = "?uniqueKey="
         static let sessionParam = "https://onthemap-api.udacity.com/v1/session"
         static let getUsersparam = "https://onthemap-api.udacity.com/v1/users/"
+        static let orderParam = "?order=-updatedAt"
         
         case getAllStudents
         case limitStudentSearch(Int)
@@ -26,6 +27,7 @@ class StudentAPIs {
         case updateStudentLocation(String)
         case session
         case getUsers(String)
+        case order
         
         var stringValue: String {
             switch self {
@@ -35,6 +37,7 @@ class StudentAPIs {
             case .updateStudentLocation(let objectId): return Endpoints.base + "/\(objectId)"
             case .session: return Endpoints.sessionParam
             case .getUsers(let userId): return Endpoints.getUsersparam + "\(userId)"
+            case .order: return Endpoints.base + Endpoints.orderParam
             }
         }
         
