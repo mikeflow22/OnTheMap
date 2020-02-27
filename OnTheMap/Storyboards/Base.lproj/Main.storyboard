@@ -259,7 +259,7 @@
         <!--Add Location-->
         <scene sceneID="9jx-MM-IyU">
             <objects>
-                <viewController id="Is3-YU-ZRG" sceneMemberID="viewController">
+                <viewController id="Is3-YU-ZRG" customClass="AddLocationViewController" customModule="OnTheMap" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="UwG-ZZ-B0e">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -284,7 +284,7 @@
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
                                         <connections>
-                                            <action selector="loginButtonTapped:" destination="Is3-YU-ZRG" eventType="touchUpInside" id="5vp-RV-Esg"/>
+                                            <action selector="findLocation:" destination="Is3-YU-ZRG" eventType="touchUpInside" id="3w9-jA-wRt"/>
                                             <segue destination="VZJ-Pj-BPe" kind="show" identifier="toDetailVC" id="f9W-Ot-flD"/>
                                         </connections>
                                     </button>
@@ -315,9 +315,9 @@
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="FYg-9g-8zv"/>
                     </navigationItem>
                     <connections>
-                        <outlet property="emailTextField" destination="2AK-Zc-FPU" id="Y6W-a1-gip"/>
-                        <outlet property="loginButtonProperties" destination="m9P-PI-pTp" id="P1h-7W-5cK"/>
-                        <outlet property="passwordTextField" destination="eGo-oL-MXj" id="4Zs-Qy-TTu"/>
+                        <outlet property="findLocationButtonProperties" destination="m9P-PI-pTp" id="OYW-vE-j7u"/>
+                        <outlet property="locationTextField" destination="2AK-Zc-FPU" id="95I-k2-s2F"/>
+                        <outlet property="mediaURLTexField" destination="eGo-oL-MXj" id="XSY-z9-n3Z"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yu0-Th-ALs" sceneMemberID="firstResponder"/>
@@ -396,6 +396,6 @@
         <image name="logo-u" width="62" height="62"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="6Uz-Nc-0mj"/>
+        <segue reference="X69-Pt-VNX"/>
     </inferredMetricsTieBreakers>
 </document>

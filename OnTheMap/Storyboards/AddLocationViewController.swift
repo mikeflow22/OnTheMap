@@ -10,13 +10,18 @@ import UIKit
 
 class AddLocationViewController: UIViewController {
 
+    @IBOutlet weak var locationTextField: UITextField!
+    @IBOutlet weak var mediaURLTexField: UITextField!
+    @IBOutlet weak var findLocationButtonProperties: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
     }
     
-
+    @IBAction func findLocation(_ sender: UIButton) {
+    }
+    
     /*
     // MARK: - Navigation
 
