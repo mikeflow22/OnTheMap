@@ -30,11 +30,11 @@ class LogInViewController: UIViewController {
         return (email, password)
     }
     
-    func showLoginFailure(message: String) {
-           let alertVC = UIAlertController(title: "Login Failed", message: message, preferredStyle: .alert)
-           alertVC.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-           show(alertVC, sender: nil)
-       }
+//    func showLoginFailure(message: String) {
+//           let alertVC = UIAlertController(title: "Login Failed", message: message, preferredStyle: .alert)
+//           alertVC.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+//           show(alertVC, sender: nil)
+//       }
     
     func triggerSegue(){
         self.performSegue(withIdentifier: "tabBarSegue", sender: nil)

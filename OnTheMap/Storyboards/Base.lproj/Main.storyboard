@@ -97,7 +97,7 @@
         <!--Item 2-->
         <scene sceneID="o1m-aj-Nd2">
             <objects>
-                <viewController id="PfY-t1-O1G" sceneMemberID="viewController">
+                <viewController id="PfY-t1-O1G" customClass="StudentListViewController" customModule="OnTheMap" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Vi2-SZ-itV">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -106,10 +106,22 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
                                 <items>
                                     <navigationItem title="ON THE MAP" id="12k-kZ-dNF">
-                                        <barButtonItem key="leftBarButtonItem" title="LOGOUT" id="Ayb-i9-jiD"/>
+                                        <barButtonItem key="leftBarButtonItem" title="LOGOUT" id="Ayb-i9-jiD">
+                                            <connections>
+                                                <action selector="logout:" destination="PfY-t1-O1G" id="0sL-5e-PI1"/>
+                                            </connections>
+                                        </barButtonItem>
                                         <rightBarButtonItems>
-                                            <barButtonItem systemItem="add" id="c0Q-i5-Epw"/>
-                                            <barButtonItem systemItem="refresh" id="fFM-sd-5UV"/>
+                                            <barButtonItem systemItem="add" id="c0Q-i5-Epw">
+                                                <connections>
+                                                    <action selector="addStudentLocation:" destination="PfY-t1-O1G" id="my7-eB-xsd"/>
+                                                </connections>
+                                            </barButtonItem>
+                                            <barButtonItem systemItem="refresh" id="fFM-sd-5UV">
+                                                <connections>
+                                                    <action selector="refresh:" destination="PfY-t1-O1G" id="eHQ-S9-0LU"/>
+                                                </connections>
+                                            </barButtonItem>
                                         </rightBarButtonItems>
                                     </navigationItem>
                                 </items>
@@ -117,6 +129,32 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="DQb-rm-clu">
                                 <rect key="frame" x="0.0" y="56" width="414" height="703"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="studentCell" textLabel="dmh-ru-Hno" detailTextLabel="1DU-QC-BlR" style="IBUITableViewCellStyleSubtitle" id="Rha-ZT-PEu">
+                                        <rect key="frame" x="0.0" y="28" width="414" height="55.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Rha-ZT-PEu" id="RFO-mR-gdV">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="55.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="dmh-ru-Hno">
+                                                    <rect key="frame" x="20" y="10" width="33.5" height="20.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="1DU-QC-BlR">
+                                                    <rect key="frame" x="20" y="31.5" width="44" height="14.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -132,6 +170,9 @@
                         <viewLayoutGuide key="safeArea" id="Ueh-7l-05k"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Item 2" selectedImage="icon_listview-deselected" id="QfG-kO-OZs"/>
+                    <connections>
+                        <outlet property="tableView" destination="DQb-rm-clu" id="T4Z-7a-FBv"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Cc5-R7-k73" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
