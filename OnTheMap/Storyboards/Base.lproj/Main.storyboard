@@ -112,7 +112,7 @@
                                             </connections>
                                         </barButtonItem>
                                         <rightBarButtonItems>
-                                            <barButtonItem systemItem="add" id="c0Q-i5-Epw">
+                                            <barButtonItem image="icon_pin" id="c0Q-i5-Epw">
                                                 <connections>
                                                     <action selector="addStudentLocation:" destination="PfY-t1-O1G" id="my7-eB-xsd"/>
                                                     <segue destination="vGs-lp-BYz" kind="presentation" id="6Uz-Nc-0mj"/>
@@ -197,7 +197,7 @@
                                             </connections>
                                         </barButtonItem>
                                         <rightBarButtonItems>
-                                            <barButtonItem systemItem="add" id="6hE-zP-GPo">
+                                            <barButtonItem image="icon_pin" id="6hE-zP-GPo">
                                                 <connections>
                                                     <action selector="addStudentLocation:" destination="xy8-WY-FVH" id="XQR-C8-UIh"/>
                                                     <segue destination="vGs-lp-BYz" kind="presentation" id="X69-Pt-VNX"/>
@@ -272,7 +272,7 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="www.google.com" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="eGo-oL-MXj">
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="www.google.com" borderStyle="roundedRect" placeholder="https://www.google.com" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="eGo-oL-MXj">
                                         <rect key="frame" x="0.0" y="42" width="290" height="34"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
@@ -392,10 +392,11 @@
     <resources>
         <image name="icon_listview-deselected" width="75" height="50"/>
         <image name="icon_mapview-deselected" width="75" height="50"/>
+        <image name="icon_pin" width="24" height="24"/>
         <image name="icon_world" width="52" height="67"/>
         <image name="logo-u" width="62" height="62"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="X69-Pt-VNX"/>
+        <segue reference="6Uz-Nc-0mj"/>
     </inferredMetricsTieBreakers>
 </document>

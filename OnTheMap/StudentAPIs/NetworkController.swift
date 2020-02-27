@@ -162,6 +162,89 @@ class NetworkController {
         task.resume()
     }
     
+    func funcToPostStudentLocation<ResponseType: Decodable, RequestType: Encodable>(url: URL, responseType: ResponseType.Type, body: RequestType, completion: @escaping (ResponseType?, Error?) -> Void){
+        print("this is the url: \(url)")
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        
+        //per mentors adding the first addValue method
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        //per mentors "when you make a  request to the server you will need to pass 2 parameters "x-parse-rest-api-key" and "x-parse-application-id" to the header.
+        request.addValue(ParseHeaderKeys.APIKey, forHTTPHeaderField: ParseHeaderValues.APIKeyValues)
+        request.addValue(ParseHeaderKeys.ApplicationID, forHTTPHeaderField: ParseHeaderValues.ApplicationIDValues)
+        
+        let encoder = JSONEncoder()
+        encoder.keyEncodingStrategy  = .convertToSnakeCase
+        
+        do {
+            request.httpBody = try encoder.encode(body)
+        } catch  {
+            print("Error in: \(#function)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)")
+            DispatchQueue.main.async {
+                completion(nil, error)
+            }
+        }
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data else {
+                print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
+                DispatchQueue.main.async {
+                    completion(nil, error)
+                }
+                return
+            }
+            
+            print("This is the data thats printed: \(String(data: data, encoding: .utf8)!)")
+            
+            if let response = response as? HTTPURLResponse {
+                print("Response: \(response.statusCode)")
+                //if response is greater than 400 then we have an error
+                if response.statusCode > 400 {
+                    print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
+                    do {
+                        //decode the data we got back into our errorStruct model so we can present the  error on the viewController
+                        let message = try JSONDecoder().decode(ErrorStruct.self, from: data)
+                        print("Status of Error: \(message.status)\n Error message: \(message.error)")
+                        let myError = ErrorStruct(status: message.status, error: message.error)
+                        completion(nil, myError)
+                        return
+                    } catch  {
+                        print("Error in: \(#function)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)")
+                    }
+                }
+            }
+            
+            if let error = error {
+                           print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
+                           completion(nil, error)
+                           return
+                       }
+                       
+                       let decoder = JSONDecoder()
+//                       decoder.keyDecodingStrategy = .convertFromSnakeCase
+                       
+                       do {
+                           //per Mentor's adding the newData property
+                           let responseObject = try decoder.decode(ResponseType.self, from: data)
+                           
+                           DispatchQueue.main.async {
+                               completion(responseObject, nil)
+                           }
+                           
+                       } catch {
+                           print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
+                           DispatchQueue.main.async {
+                               completion(nil, error)
+                           }
+                           return
+                       }
+            
+        }
+        task.resume()
+    }
+    
     func orderStudentsInList(completion: @escaping (ErrorStruct?) -> Void){
         funcForAllGetMethods(url: StudentAPIs.Endpoints.order.url, responseType: TopLevelDictionary.self) { (responseObject, error) in
             if let error = error {
@@ -354,7 +437,7 @@ class NetworkController {
         
         print("this is the url for function: \(#function) -> url:  \(StudentAPIs.Endpoints.getAllStudents.url)")
         
-        funcForAllPostMethods(url: StudentAPIs.Endpoints.getAllStudents.url, responseType: StudentPostResponse.self, body: postRequest) { (responseObject, error) in
+        funcToPostStudentLocation(url: StudentAPIs.Endpoints.getAllStudents.url, responseType: StudentPostResponse.self, body: postRequest) { (responseObject, error) in
             if let error = error {
                 print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
                 DispatchQueue.main.async {
@@ -365,6 +448,7 @@ class NetworkController {
             
             if let returnedObject = responseObject {
                 print("This is the object's id: \(returnedObject.objectId)")
+                print("This is the createdAt date: \(returnedObject.createdAt)")
                 DispatchQueue.main.async {
                     completion(true, nil)
                 }

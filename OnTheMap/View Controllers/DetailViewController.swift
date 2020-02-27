@@ -50,7 +50,7 @@ class DetailViewController: UIViewController {
                    print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
                    return
                }
-        let student = Student(firstName: "Hottest", lastName: "guy ever", longitude: coordinate.longitude, latitude: coordinate.latitude, mapString: addressString, mediaURL: mediaURL, uniqueKey: UUID().uuidString, objectId: "00000001", createdAt: Date().stringFromDate(), updatedAt: Date().stringFromDate())
+        let student = Student(firstName: "Hottest", lastName: "guy ever", longitude: coordinate.longitude, latitude: coordinate.latitude, mapString: addressString, mediaURL: mediaURL, uniqueKey: "7122294624", objectId: "00000001", createdAt: Date().stringFromDate(), updatedAt: Date().stringFromDate())
         
         NetworkController.shared.postStudentLocation(student: student) { (success, error) in
             if let error = error {
