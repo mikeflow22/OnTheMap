@@ -15,6 +15,8 @@
 		1B02925A2407389E00D625A3 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0292592407389E00D625A3 /* MapViewController.swift */; };
 		1B02925C2407448100D625A3 /* ViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B02925B2407448100D625A3 /* ViewController+Extension.swift */; };
 		1B02925E2407495100D625A3 /* StudentListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B02925D2407495100D625A3 /* StudentListViewController.swift */; };
+		1B4FA8392408259B0091C375 /* AddLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B4FA8382408259B0091C375 /* AddLocationViewController.swift */; };
+		1B4FA83B240825B30091C375 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B4FA83A240825B30091C375 /* DetailViewController.swift */; };
 		1B8B504B24018ACF006494B8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8B504A24018ACF006494B8 /* AppDelegate.swift */; };
 		1B8B504D24018ACF006494B8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8B504C24018ACF006494B8 /* SceneDelegate.swift */; };
 		1B8B504F24018ACF006494B8 /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B8B504E24018ACF006494B8 /* LogInViewController.swift */; };
@@ -38,6 +40,8 @@
 		1B0292592407389E00D625A3 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		1B02925B2407448100D625A3 /* ViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+Extension.swift"; sourceTree = "<group>"; };
 		1B02925D2407495100D625A3 /* StudentListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentListViewController.swift; sourceTree = "<group>"; };
+		1B4FA8382408259B0091C375 /* AddLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AddLocationViewController.swift; path = OnTheMap/Storyboards/AddLocationViewController.swift; sourceTree = SOURCE_ROOT; };
+		1B4FA83A240825B30091C375 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		1B8B504724018ACF006494B8 /* OnTheMap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OnTheMap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1B8B504A24018ACF006494B8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1B8B504C24018ACF006494B8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -133,6 +137,8 @@
 		1B8B506424018C82006494B8 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				1B4FA8382408259B0091C375 /* AddLocationViewController.swift */,
+				1B4FA83A240825B30091C375 /* DetailViewController.swift */,
 				1B8B504E24018ACF006494B8 /* LogInViewController.swift */,
 				1B0292592407389E00D625A3 /* MapViewController.swift */,
 				1B02925D2407495100D625A3 /* StudentListViewController.swift */,
@@ -238,9 +244,11 @@
 				1B8B506A24020611006494B8 /* StudentPostResponse.swift in Sources */,
 				1B8B504F24018ACF006494B8 /* LogInViewController.swift in Sources */,
 				1B002ED124047F7600569E91 /* LogoutRequest.swift in Sources */,
+				1B4FA83B240825B30091C375 /* DetailViewController.swift in Sources */,
 				1B002ECF240478D300569E91 /* SessionResponse.swift in Sources */,
 				1B8B504B24018ACF006494B8 /* AppDelegate.swift in Sources */,
 				1BAA79AB2405DD5100FCE23B /* PostStudentRequest.swift in Sources */,
+				1B4FA8392408259B0091C375 /* AddLocationViewController.swift in Sources */,
 				1B8B506224018B32006494B8 /* Student.swift in Sources */,
 				1B8B504D24018ACF006494B8 /* SceneDelegate.swift in Sources */,
 				1B02925A2407389E00D625A3 /* MapViewController.swift in Sources */,
