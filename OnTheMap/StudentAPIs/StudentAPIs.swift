@@ -191,12 +191,12 @@ class StudentAPIs {
     }
     
     //function works with optionals
-    class func getUserData(student: Student, completion: @escaping(Bool, Error?) -> Void){
+    class func getUserData(student: Student, completion: @escaping(Bool, ErrorStruct?) -> Void){
         let url = Endpoints.getUsers(student.uniqueKey).url
         funcForAllGetMethods(url: url, responseType: GetUserResponse.self) { (responseObject, error) in
             if let error = error {
                 print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
-                completion(false, error)
+                completion(false, error as? ErrorStruct)
                 return
             }
             
@@ -207,7 +207,7 @@ class StudentAPIs {
                 print("This is the responseobject linkedinURL: \(String(describing: responseObject.user.linkedinUrl))")
             } else {
                 print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
-                completion(false, error)
+                completion(false, error as? ErrorStruct)
             }
         }
     }
@@ -280,7 +280,7 @@ class StudentAPIs {
     }
     
     //function  doesn't work
-    class func updateStudentLocation(student: Student, completion: @escaping (Bool, Error?) -> Void){
+    class func updateStudentLocation(student: Student, completion: @escaping (Bool, ErrorStruct?) -> Void){
         
         let postStudentRequest = PostStudentRequest(firstName: student.firstName, lastName: student.lastName, latitude: student.latitude, longitude: student.longitude, mapString: student.mapString, mediaURL: student.mediaURL, uniqueKey: student.uniqueKey)
         
@@ -305,7 +305,7 @@ class StudentAPIs {
             print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
             print("Error in: \(#function)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)")
             DispatchQueue.main.async {
-                completion(false, error)
+                completion(false, error as? ErrorStruct)
             }
         }
         
@@ -316,14 +316,14 @@ class StudentAPIs {
             if let error = error {
                 print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
                 DispatchQueue.main.async {
-                    completion(false, error)
+                    completion(false, error as? ErrorStruct)
                 }
                 return
             }
             
             guard let data = data else {
                 print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
-                completion(false, error)
+                completion(false, error as? ErrorStruct)
                 return
             }
             
@@ -352,7 +352,7 @@ class StudentAPIs {
     }
     
     //function doesn't work
-    class func postStudentLocation(student: Student, completion: @escaping (Bool, Error?) -> Void){
+    class func postStudentLocation(student: Student, completion: @escaping (Bool, ErrorStruct?) -> Void){
         let postRequest = PostStudentRequest(firstName: student.firstName, lastName: student.lastName, latitude: student.latitude, longitude: student.longitude, mapString: student.mapString, mediaURL: student.mediaURL, uniqueKey: student.uniqueKey)
         
         print("this is the url for function: \(#function) -> url:  \(Endpoints.getAllStudents.url)")
@@ -361,7 +361,7 @@ class StudentAPIs {
             if let error = error {
                 print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
                 DispatchQueue.main.async {
-                    completion(false, error)
+                    completion(false, error as? ErrorStruct)
                 }
                 return
             }
@@ -374,19 +374,19 @@ class StudentAPIs {
             } else {
                 print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
                 DispatchQueue.main.async {
-                    completion(false, error)
+                    completion(false, error as? ErrorStruct)
                 }
             }
         }
     }
     
     //works
-    class func getStudentsWithALimit(studentLimit limit: Int, completion: @escaping ([Student]?, Error?) -> Void){
+    class func getStudentsWithALimit(studentLimit limit: Int, completion: @escaping ([Student]?, ErrorStruct?) -> Void){
         funcForAllGetMethods(url: Endpoints.limitStudentSearch(limit).url, responseType: TopLevelDictionary.self) { (response, error) in
             if let error = error {
                 print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
                 DispatchQueue.main.async {
-                    completion(nil, error)
+                    completion(nil, error as? ErrorStruct)
                 }
                 return
             }
@@ -406,19 +406,19 @@ class StudentAPIs {
             } else {
                 DispatchQueue.main.async {
                     print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
-                    completion(nil, error)
+                    completion(nil, error as? ErrorStruct)
                 }
             }
         }
     }
     
     //works
-    class func getAllStudents(completion: @escaping ([Student]?, Error?) -> Void){
+    class func getAllStudents(completion: @escaping ([Student]?, ErrorStruct?) -> Void){
         funcForAllGetMethods(url: Endpoints.getAllStudents.url, responseType: TopLevelDictionary.self) { (response, error) in
             if let error = error {
                 print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
                 DispatchQueue.main.async {
-                    completion(nil, error)
+                    completion(nil, error as? ErrorStruct)
                 }
                 return
             }
@@ -438,7 +438,7 @@ class StudentAPIs {
             } else {
                 DispatchQueue.main.async {
                     print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
-                    completion(nil, error)
+                    completion(nil, error as? ErrorStruct)
                 }
             }
         }

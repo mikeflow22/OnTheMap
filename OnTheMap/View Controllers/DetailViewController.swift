@@ -46,6 +46,28 @@ class DetailViewController: UIViewController {
     
     @IBAction func finishButtonTapped(_ sender: UIButton) {
         //post to server
+        guard let coordinate = coordinate, let mediaURL = mediaURL, let addressString = addressString else {
+                   print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
+                   return
+               }
+        let student = Student(firstName: "Hottest", lastName: "guy ever", longitude: coordinate.longitude, latitude: coordinate.latitude, mapString: addressString, mediaURL: mediaURL, uniqueKey: UUID().uuidString, objectId: "00000001", createdAt: Date().stringFromDate(), updatedAt: Date().stringFromDate())
+        
+        StudentAPIs.postStudentLocation(student: student) { (success, error) in
+            if let error = error {
+                print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
+                return
+            }
+            
+            if success {
+                print("Success in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
+                DispatchQueue.main.async {
+                    self.dismiss(animated: true, completion: nil)
+                }
+            } else {
+                print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
+                return
+            }
+        }
     }
     /*
     // MARK: - Navigation
@@ -58,3 +80,11 @@ class DetailViewController: UIViewController {
     */
 }
 
+extension Date {
+    func stringFromDate() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeStyle = .short
+        dateFormatter.dateStyle = .short
+        return dateFormatter.string(from: self)
+    }
+}
