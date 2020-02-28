@@ -15,7 +15,7 @@ class StudentAPIs {
     //MARK: - Endpoints
     enum Endpoints {
         static let base = "https://onthemap-api.udacity.com/v1/StudentLocation"
-        static let limitQuery = "?limit="
+        static let limitQuery = "?limit=100"
         static let uniqueKeyQuery = "?uniqueKey="
         static let sessionParam = "https://onthemap-api.udacity.com/v1/session"
         static let getUsersparam = "https://onthemap-api.udacity.com/v1/users/"
@@ -28,6 +28,7 @@ class StudentAPIs {
         case session
         case getUsers(String)
         case order
+        case recent100
         
         var stringValue: String {
             switch self {
@@ -38,6 +39,7 @@ class StudentAPIs {
             case .session: return Endpoints.sessionParam
             case .getUsers(let userId): return Endpoints.getUsersparam + "\(userId)"
             case .order: return Endpoints.base + Endpoints.orderParam
+            case .recent100: return Endpoints.base + Endpoints.limitQuery + Endpoints.orderParam
             }
         }
         
