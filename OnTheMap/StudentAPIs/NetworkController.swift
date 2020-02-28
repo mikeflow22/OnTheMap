@@ -59,9 +59,6 @@ class NetworkController {
             }
             
             let decoder = JSONDecoder()
-            decoder.keyDecodingStrategy = .convertFromSnakeCase
-            //            let newData = data.subdata(in: 5..<data.count)
-            //            print("This is the data thats printed: \(String(data: newData, encoding: .utf8)!)")
             
             do {
                 let responseObject =  try decoder.decode(ResponseType.self, from: data)
