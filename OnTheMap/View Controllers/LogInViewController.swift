@@ -40,7 +40,7 @@ class LogInViewController: UIViewController {
         self.performSegue(withIdentifier: "tabBarSegue", sender: nil)
     }
     
-    func handleLoginResponse(success: Bool, error: ErrorStruct?){
+    func handleLoginResponse(success: Bool, error: Error? /*ErrorStruct?*/){
         if success {
             print("This is the sessionID: \(String(describing: NetworkController.Auth.sessionId))")
             print("Success in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
@@ -49,6 +49,11 @@ class LogInViewController: UIViewController {
                 self.triggerSegue()
             }
         } else {
+            if let realError = error as? ErrorStruct {
+                DispatchQueue.main.async {
+                    self.showLoginFailure(message: realError.localizedDescription ?? "something went wrong here: \(#function)")
+                }
+            }
             DispatchQueue.main.async {
                 self.showLoginFailure(message: error?.localizedDescription ?? "something went wrong here: \(#function)")
             }

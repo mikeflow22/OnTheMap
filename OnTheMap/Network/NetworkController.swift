@@ -98,6 +98,13 @@ class NetworkController {
         }
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
+                DispatchQueue.main.async {
+                    completion(nil, error)
+                }
+                return
+            }
             guard let data = data else {
                 print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
                 DispatchQueue.main.async {
@@ -275,14 +282,14 @@ class NetworkController {
     }
     
     //works - Use ErrorStruct to display the response we get back if its > 400
-    func login(with email: String, password: String, completion: @escaping (Bool, ErrorStruct?) -> ()){
+    func login(with email: String, password: String, completion: @escaping (Bool, Error? /*ErrorStruct?*/) -> ()){
         let url = StudentAPIs.Endpoints.session.url
         let loginRequestBody = LoginRequest(udacity: LoginData(username: email, password: password))
         
         funcForAllPostMethods(url: url, responseType: SessionResponse.self, body: loginRequestBody) { (responseObject, error ) in
-            if let error = error as? ErrorStruct {
+            if let error = error  {
                 print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
-                completion(false, error)
+                completion(false, error /*as? ErrorStruct*/)
                 return
             }
             
@@ -300,8 +307,9 @@ class NetworkController {
             } else {
                 print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
                 DispatchQueue.main.async {
-                    completion(false, error as? ErrorStruct)
+                    completion(false, error /*as? ErrorStruct*/)
                 }
+                return
             }
         }
     }
