@@ -84,6 +84,10 @@ class NetworkController {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         
+        //per mentors adding the first addValue method
+               request.addValue("application/json", forHTTPHeaderField: "Accept")
+               request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        
         let encoder = JSONEncoder()
         encoder.keyEncodingStrategy  = .convertToSnakeCase
         
@@ -286,10 +290,10 @@ class NetworkController {
             }
             
             if let responseObject = responseObject {
-                Auth.sessionId = responseObject.session?.id
+                Auth.sessionId = responseObject.session.id
                 print("this is the sessionId we got back from loggin in: \(String(describing: Auth.sessionId))")
                 
-                Auth.expiration = responseObject.session?.expeiration
+                Auth.expiration = responseObject.session.expiration
                 print("this is the user's expiration date we got back from loggin in: \(String(describing: Auth.expiration))")
                 DispatchQueue.main.async {
                     completion(true, nil)
