@@ -86,6 +86,24 @@
 			path = Responses;
 			sourceTree = "<group>";
 		};
+		1B005F3F2409CC8C005FD59D /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				1B02925B2407448100D625A3 /* ViewController+Extension.swift */,
+				1B4FA83C24082E090091C375 /* UIViewController+MapViewExtension.swift */,
+				1B005F3D2409C9AF005FD59D /* Notification.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		1B005F402409CCA9005FD59D /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				1B4FA83E240840570091C375 /* NetworkController.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
 		1B8B503E24018ACF006494B8 = {
 			isa = PBXGroup;
 			children = (
@@ -105,6 +123,8 @@
 		1B8B504924018ACF006494B8 /* OnTheMap */ = {
 			isa = PBXGroup;
 			children = (
+				1B005F402409CCA9005FD59D /* Network */,
+				1B005F3F2409CC8C005FD59D /* Extensions */,
 				1B8B506624018CE7006494B8 /* StudentAPIs */,
 				1B8B506524018C89006494B8 /* Storyboards */,
 				1B8B506424018C82006494B8 /* View Controllers */,
@@ -164,10 +184,6 @@
 			isa = PBXGroup;
 			children = (
 				1B8B506724018D0C006494B8 /* StudentAPIs.swift */,
-				1B02925B2407448100D625A3 /* ViewController+Extension.swift */,
-				1B4FA83C24082E090091C375 /* UIViewController+MapViewExtension.swift */,
-				1B4FA83E240840570091C375 /* NetworkController.swift */,
-				1B005F3D2409C9AF005FD59D /* Notification.swift */,
 			);
 			path = StudentAPIs;
 			sourceTree = "<group>";
