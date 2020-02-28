@@ -10,11 +10,11 @@ import Foundation
 
 //this goes into the body
 struct PostStudentRequest: Codable {
-    let firstName: String
-    let lastName: String
-    let latitude: Double
-    let longitude: Double
-    let mapString: String
-    let mediaURL: String
-    let uniqueKey: String
+    let firstName: String?
+    let lastName: String?
+    let latitude: Double?
+    let longitude: Double?
+    let mapString: String?
+    let mediaURL: String?
+    let uniqueKey: String?
 }

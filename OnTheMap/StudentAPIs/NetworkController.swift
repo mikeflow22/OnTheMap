@@ -176,7 +176,6 @@ class NetworkController {
         request.addValue(ParseHeaderKeys.ApplicationID, forHTTPHeaderField: ParseHeaderValues.ApplicationIDValues)
         
         let encoder = JSONEncoder()
-        encoder.keyEncodingStrategy  = .convertToSnakeCase
         
         do {
             request.httpBody = try encoder.encode(body)
@@ -217,30 +216,28 @@ class NetworkController {
             }
             
             if let error = error {
-                           print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
-                           completion(nil, error)
-                           return
-                       }
-                       
-                       let decoder = JSONDecoder()
-//                       decoder.keyDecodingStrategy = .convertFromSnakeCase
-                       
-                       do {
-                           //per Mentor's adding the newData property
-                           let responseObject = try decoder.decode(ResponseType.self, from: data)
-                           
-                           DispatchQueue.main.async {
-                               completion(responseObject, nil)
-                           }
-                           
-                       } catch {
-                           print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
-                           DispatchQueue.main.async {
-                               completion(nil, error)
-                           }
-                           return
-                       }
+                print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
+                completion(nil, error)
+                return
+            }
             
+            let decoder = JSONDecoder()
+            
+            do {
+                //per Mentor's adding the newData property
+                let responseObject = try decoder.decode(ResponseType.self, from: data)
+                
+                DispatchQueue.main.async {
+                    completion(responseObject, nil)
+                }
+                
+            } catch {
+                print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
+                DispatchQueue.main.async {
+                    completion(nil, error)
+                }
+                return
+            }
         }
         task.resume()
     }
