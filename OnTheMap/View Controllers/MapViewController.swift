@@ -28,6 +28,12 @@ class MapViewController: UIViewController {
         super.viewDidLoad()
         mapView.delegate = self
         get100Students()
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshMap), name: .postedStudentLocation, object: nil)
+    }
+    @objc func refreshMap(){
+        self.mapView.removeAnnotations(self.annotations)
+        
+        get100Students()
     }
     
     func get100Students(){

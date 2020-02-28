@@ -28,6 +28,13 @@ class StudentListViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         orderStudentsArray()
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshTable), name: .postedStudentLocation, object: nil)
+
+    }
+    
+    @objc func refreshTable(){
+        students?.removeAll()
+        orderStudentsArray()
     }
     
     func orderStudentsArray(){

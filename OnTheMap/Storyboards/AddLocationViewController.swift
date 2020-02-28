@@ -26,8 +26,8 @@ class AddLocationViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
     }
+    
     func reverseGeoCodeString(fromLocation location: String) {
         let geoCoder = CLGeocoder()
         geoCoder.geocodeAddressString(location) { (placemarks, error) in

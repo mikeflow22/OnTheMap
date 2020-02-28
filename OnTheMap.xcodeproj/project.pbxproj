@@ -11,6 +11,7 @@
 		1B002ECF240478D300569E91 /* SessionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B002ECE240478D300569E91 /* SessionResponse.swift */; };
 		1B002ED124047F7600569E91 /* LogoutRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B002ED024047F7600569E91 /* LogoutRequest.swift */; };
 		1B002ED324048DF500569E91 /* GetUserResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B002ED224048DF500569E91 /* GetUserResponse.swift */; };
+		1B005F3E2409C9AF005FD59D /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B005F3D2409C9AF005FD59D /* Notification.swift */; };
 		1B0292562406E7E700D625A3 /* ErrorStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0292552406E7E700D625A3 /* ErrorStruct.swift */; };
 		1B02925A2407389E00D625A3 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0292592407389E00D625A3 /* MapViewController.swift */; };
 		1B02925C2407448100D625A3 /* ViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B02925B2407448100D625A3 /* ViewController+Extension.swift */; };
@@ -38,6 +39,7 @@
 		1B002ECE240478D300569E91 /* SessionResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionResponse.swift; sourceTree = "<group>"; };
 		1B002ED024047F7600569E91 /* LogoutRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutRequest.swift; sourceTree = "<group>"; };
 		1B002ED224048DF500569E91 /* GetUserResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetUserResponse.swift; sourceTree = "<group>"; };
+		1B005F3D2409C9AF005FD59D /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		1B0292552406E7E700D625A3 /* ErrorStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorStruct.swift; sourceTree = "<group>"; };
 		1B0292592407389E00D625A3 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		1B02925B2407448100D625A3 /* ViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+Extension.swift"; sourceTree = "<group>"; };
@@ -165,6 +167,7 @@
 				1B02925B2407448100D625A3 /* ViewController+Extension.swift */,
 				1B4FA83C24082E090091C375 /* UIViewController+MapViewExtension.swift */,
 				1B4FA83E240840570091C375 /* NetworkController.swift */,
+				1B005F3D2409C9AF005FD59D /* Notification.swift */,
 			);
 			path = StudentAPIs;
 			sourceTree = "<group>";
@@ -248,6 +251,7 @@
 				1B4FA83F240840570091C375 /* NetworkController.swift in Sources */,
 				1BAA79A92405A53300FCE23B /* LoginRequest.swift in Sources */,
 				1B002ECD2404787600569E91 /* PutStudentResponse.swift in Sources */,
+				1B005F3E2409C9AF005FD59D /* Notification.swift in Sources */,
 				1B8B506A24020611006494B8 /* StudentPostResponse.swift in Sources */,
 				1B8B504F24018ACF006494B8 /* LogInViewController.swift in Sources */,
 				1B002ED124047F7600569E91 /* LogoutRequest.swift in Sources */,

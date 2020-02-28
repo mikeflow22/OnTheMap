@@ -62,7 +62,9 @@ class DetailViewController: UIViewController {
             if success {
                 print("Success in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
                 DispatchQueue.main.async {
+                    NotificationCenter.default.post(name: .postedStudentLocation, object: nil)
                     self.dismiss(animated: true, completion: nil)
+                    
                 }
             } else {
                 print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
