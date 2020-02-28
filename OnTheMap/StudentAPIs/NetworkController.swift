@@ -84,14 +84,6 @@ class NetworkController {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         
-        //per mentors adding the first addValue method
-        request.addValue("application/json", forHTTPHeaderField: "Accept")
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        //per mentors "when you make a  request to the server you will need to pass 2 parameters "x-parse-rest-api-key" and "x-parse-application-id" to the header.
-        request.addValue(ParseHeaderKeys.APIKey, forHTTPHeaderField: ParseHeaderValues.APIKeyValues)
-        request.addValue(ParseHeaderKeys.ApplicationID, forHTTPHeaderField: ParseHeaderValues.ApplicationIDValues)
-        
         let encoder = JSONEncoder()
         encoder.keyEncodingStrategy  = .convertToSnakeCase
         
