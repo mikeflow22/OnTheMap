@@ -17,9 +17,9 @@ struct Student: Codable {
     let mapString: String
     let mediaURL: String
     let uniqueKey: String
-    let objectId: String
-    let createdAt: String
-    let updatedAt: String
+    let objectId: String?
+    let createdAt: String?
+    let updatedAt: String?
     
     var fullName: String {
         return "\(firstName) \(lastName)"

@@ -14,10 +14,10 @@ class NetworkController {
     var orderedStudents = [Student]()
     
     struct Auth {
-        static var sessionId: String?
-        static var accountKey: String?
+        static var sessionId = ""
+        static var accountKey = ""
         static var registered = false
-        static var expiration: String?
+        static var expiration = ""
     }
     
     struct ParseHeaderKeys {
@@ -31,7 +31,7 @@ class NetworkController {
     }
     
     func assignStudentToBody(_ student: Student) -> Student {
-        return Student(firstName: student.firstName, lastName: student.lastName, longitude: student.longitude, latitude: student.latitude, mapString: student.mapString, mediaURL: student.mediaURL, uniqueKey: student.createdAt, objectId: student.objectId, createdAt: student.uniqueKey, updatedAt: student.updatedAt)
+        return Student(firstName: student.firstName, lastName: student.lastName, longitude: student.longitude, latitude: student.latitude, mapString: student.mapString, mediaURL: student.mediaURL, uniqueKey: student.createdAt ?? "", objectId: student.objectId, createdAt: student.uniqueKey, updatedAt: student.updatedAt)
     }
     
     func funcForAllGetMethods<ResponseType: Decodable>(url: URL, responseType: ResponseType.Type, completion: @escaping (ResponseType?, Error?) -> Void){
@@ -288,6 +288,8 @@ class NetworkController {
             
             if let responseObject = responseObject {
                 Auth.sessionId = responseObject.session.id
+                Auth.accountKey =  responseObject.account.key
+                print("This is the accountKey: \(Auth.accountKey)")
                 print("this is the sessionId we got back from loggin in: \(String(describing: Auth.sessionId))")
                 
                 Auth.expiration = responseObject.session.expiration
@@ -332,7 +334,7 @@ class NetworkController {
             }
             
             //DELETE SESSION ID
-            Auth.sessionId = nil
+            Auth.sessionId = ""
             DispatchQueue.main.async {
                 print("The session ID sould now be empty: \(String(describing: Auth.sessionId))")
                 completion(true, nil)
@@ -346,8 +348,8 @@ class NetworkController {
         
         let postStudentRequest = PostStudentRequest(firstName: student.firstName, lastName: student.lastName, latitude: student.latitude, longitude: student.longitude, mapString: student.mapString, mediaURL: student.mediaURL, uniqueKey: student.uniqueKey)
         
-        print("This is the url for: \(#function) -> \(StudentAPIs.Endpoints.updateStudentLocation(student.objectId).url)")
-        var request = URLRequest(url: StudentAPIs.Endpoints.updateStudentLocation(student.objectId).url)
+        print("This is the url for: \(#function) -> \(StudentAPIs.Endpoints.updateStudentLocation(student.objectId ?? "").url)")
+        var request = URLRequest(url: StudentAPIs.Endpoints.updateStudentLocation(student.objectId ?? "").url)
         request.httpMethod = "PUT"
         
         //per mentors adding the first addValue method

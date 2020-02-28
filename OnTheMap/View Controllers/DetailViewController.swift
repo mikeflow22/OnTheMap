@@ -51,7 +51,7 @@ class DetailViewController: UIViewController {
     
     func post(firstName: String, lastName: String, coordinate: CLLocationCoordinate2D, mapString: String, mediaURL: String){
         
-        let student = Student(firstName: firstName, lastName: lastName, longitude: coordinate.longitude, latitude: coordinate.latitude, mapString: mapString, mediaURL: mediaURL, uniqueKey: "7122294624", objectId: "CDHfAy8sdp", createdAt: "2020-02-27T02:48:18.321Z", updatedAt: Date().stringFromDate())
+        let student = Student(firstName: firstName, lastName: lastName, longitude: coordinate.longitude, latitude: coordinate.latitude, mapString: mapString, mediaURL: mediaURL, uniqueKey: NetworkController.Auth.accountKey, objectId: nil, createdAt: nil, updatedAt: nil)
         
         NetworkController.shared.postStudentLocation(student: student) { (success, error) in
             if let error = error {
