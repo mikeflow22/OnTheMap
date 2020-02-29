@@ -41,14 +41,13 @@ class StudentListViewController: UIViewController {
             if let realError = error as? ErrorStruct {
                 DispatchQueue.main.async {
                     self.failureAlert(title: "Network Failure", message: realError.localizedDescription)
-//                    self.connectionFailed()
                 }
             } else if let error = error  {
                 DispatchQueue.main.async {
                     self.failureAlert(title: "Network Failure", message: error.localizedDescription)
-//                    self.connectionFailed()
                 }
             }
+            
             //if this worked then we should have students in network controller
             self.students = NetworkController.shared.orderedStudents
         }
@@ -64,9 +63,6 @@ class StudentListViewController: UIViewController {
         
         //network call to retrieve students
         orderStudentsArray()
-    }
-    
-    @IBAction func addStudentLocation(_ sender: UIBarButtonItem) {
     }
 }
 

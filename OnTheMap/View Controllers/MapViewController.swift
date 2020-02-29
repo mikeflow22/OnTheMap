@@ -20,6 +20,7 @@ class MapViewController: UIViewController {
             createAnnotations(forStudents: students)
         }
     }
+    
     var annotations = [MKPointAnnotation]()
     
     @IBOutlet weak var mapView: MKMapView!
@@ -30,6 +31,7 @@ class MapViewController: UIViewController {
         get100Students()
         NotificationCenter.default.addObserver(self, selector: #selector(refreshMap), name: .postedStudentLocation, object: nil)
     }
+    
     @objc func refreshMap(){
         self.mapView.removeAnnotations(self.annotations)
         
@@ -41,12 +43,10 @@ class MapViewController: UIViewController {
             if let realError = error as? ErrorStruct {
                 DispatchQueue.main.async {
                     self.failureAlert(title: "Network Failure", message: realError.localizedDescription)
-//                    self.connectionFailed()
                 }
             } else if let error = error  {
                 DispatchQueue.main.async {
                     self.failureAlert(title: "Network Failure", message: error.localizedDescription)
-//                    self.connectionFailed()
                 }
             }
             
@@ -84,9 +84,6 @@ class MapViewController: UIViewController {
         
         //network call to retrieve students
         get100Students()
-    }
-    
-    @IBAction func addStudentLocation(_ sender: UIBarButtonItem) {
     }
 }
 

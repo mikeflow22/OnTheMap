@@ -19,7 +19,7 @@ class StudentAPIs {
         static let uniqueKeyQuery = "?uniqueKey="
         static let sessionParam = "https://onthemap-api.udacity.com/v1/session"
         static let getUsersparam = "https://onthemap-api.udacity.com/v1/users/"
-        static let orderParam = "?order=-updatedAt"
+        static let orderParam = "&order=-updatedAt"
         
         case getAllStudents
         case limitStudentSearch(Int)
