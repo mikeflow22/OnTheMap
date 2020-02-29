@@ -52,6 +52,11 @@ class AddLocationViewController: UIViewController {
         }
     }
     
+    @IBAction func cancel(_ sender: UIBarButtonItem) {
+         self.dismiss(animated: true, completion: nil)
+        NotificationCenter.default.post(name: .postedStudentLocation, object: nil)
+    }
+    
     @IBAction func findLocation(_ sender: UIButton) {
        guard let location = locationTextField.text, !location.isEmpty, let link = mediaURLTexField.text, !link.isEmpty else {
             print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")

@@ -311,7 +311,11 @@
                         <viewLayoutGuide key="safeArea" id="1XN-JS-moi"/>
                     </view>
                     <navigationItem key="navigationItem" title="Add Location" id="occ-Yv-j0R">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="FYg-9g-8zv"/>
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="FYg-9g-8zv">
+                            <connections>
+                                <action selector="cancel:" destination="Is3-YU-ZRG" id="np8-De-hgy"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="findLocationButtonProperties" destination="m9P-PI-pTp" id="OYW-vE-j7u"/>
