@@ -424,7 +424,7 @@ class NetworkController {
     }
     
     //function doesn't work
-    func postStudentLocation(student: Student, completion: @escaping (Bool, ErrorStruct?) -> Void){
+    func postStudentLocation(student: Student, completion: @escaping (Bool, Error?) -> Void){
         let postRequest = PostStudentRequest(firstName: student.firstName, lastName: student.lastName, latitude: student.latitude, longitude: student.longitude, mapString: student.mapString, mediaURL: student.mediaURL, uniqueKey: student.uniqueKey)
         
         print("this is the url for function: \(#function) -> url:  \(StudentAPIs.Endpoints.getAllStudents.url)")
@@ -433,7 +433,7 @@ class NetworkController {
             if let error = error {
                 print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
                 DispatchQueue.main.async {
-                    completion(false, error as? ErrorStruct)
+                    completion(false, error)
                 }
                 return
             }
@@ -447,7 +447,7 @@ class NetworkController {
             } else {
                 print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
                 DispatchQueue.main.async {
-                    completion(false, error as? ErrorStruct)
+                    completion(false, error)
                 }
             }
         }

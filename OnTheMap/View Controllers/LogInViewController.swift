@@ -45,11 +45,12 @@ class LogInViewController: UIViewController {
         } else {
             if let realError = error as? ErrorStruct {
                 DispatchQueue.main.async {
-                    self.failureAlert(title: "Login Failure", message: realError.localizedDescription ?? "something went wrong here: \(#function)")
+                    self.failureAlert(title: "Login Failure", message: realError.localizedDescription + "\(#function)")
                 }
-            }
-            DispatchQueue.main.async {
-                self.failureAlert(title: "Login Failure", message: error?.localizedDescription ?? "something went wrong here: \(#function)")
+            } else if let error = error {
+                DispatchQueue.main.async {
+                    self.failureAlert(title: "Login Failure", message: error.localizedDescription + "\(#function)")
+                }
             }
         }
     }

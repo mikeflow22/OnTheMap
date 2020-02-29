@@ -41,12 +41,12 @@ class MapViewController: UIViewController {
             if let realError = error as? ErrorStruct {
                 DispatchQueue.main.async {
                     self.failureAlert(title: "Network Failure", message: realError.localizedDescription + " \(#function)")
-                    self.connectionFailed()
+//                    self.connectionFailed()
                 }
             } else if let error = error  {
                 DispatchQueue.main.async {
                     self.failureAlert(title: "Network Failure", message: error.localizedDescription + " \(#function)")
-                    self.connectionFailed()
+//                    self.connectionFailed()
                 }
             }
             
