@@ -20,16 +20,6 @@ class NetworkController {
         static var expiration = ""
     }
     
-    struct ParseHeaderKeys {
-        static let APIKey = "X-Parse-REST-API-Key"
-        static let ApplicationID = "X-Parse-Application-Id"
-    }
-    
-    struct ParseHeaderValues {
-        static let APIKeyValues = "QuWThTdiRmTux3YaDseUSEpUKo7aBYM737yKd4gY"
-        static let ApplicationIDValues = "QrX47CA9cyuGewLdsL7o5Eb8iug6Em8ye0dnAbIr"
-    }
-    
     func assignStudentToBody(_ student: Student) -> Student {
         return Student(firstName: student.firstName, lastName: student.lastName, longitude: student.longitude, latitude: student.latitude, mapString: student.mapString, mediaURL: student.mediaURL, uniqueKey: student.createdAt ?? "", objectId: student.objectId, createdAt: student.uniqueKey, updatedAt: student.updatedAt)
     }
@@ -258,29 +248,7 @@ class NetworkController {
             }
         }
     }
-    
-    //function works with optionals
-    func getUserData(student: Student, completion: @escaping(Bool, ErrorStruct?) -> Void){
-        let url = StudentAPIs.Endpoints.getUsers(student.uniqueKey).url
-        funcForAllGetMethods(url: url, responseType: GetUserResponse.self) { (responseObject, error) in
-            if let error = error {
-                print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
-                completion(false, error as? ErrorStruct)
-                return
-            }
-            
-            if let responseObject = responseObject {
-                print("This is the responseobject firstName: \(String(describing: responseObject.user.firstName))")
-                print("This is the responseobject lastName: \(String(describing: responseObject.user.lastName))")
-                print("This is the responseobject imageURL: \(String(describing: responseObject.user.imageUrl))")
-                print("This is the responseobject linkedinURL: \(String(describing: responseObject.user.linkedinUrl))")
-            } else {
-                print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
-                completion(false, error as? ErrorStruct)
-            }
-        }
-    }
-    
+  
     //works - Use ErrorStruct to display the response we get back if its > 400
     func login(with email: String, password: String, completion: @escaping (Bool, Error? /*ErrorStruct?*/) -> ()){
         let url = StudentAPIs.Endpoints.session.url
@@ -314,7 +282,6 @@ class NetworkController {
         }
     }
     
-    //works
     func logout(completion: @escaping (Bool, Error?) -> Void){
         var request = URLRequest(url: StudentAPIs.Endpoints.session.url)
         print("This is the url in function: \(#function) -> url: \(StudentAPIs.Endpoints.session.url)")
@@ -351,79 +318,6 @@ class NetworkController {
         task.resume()
     }
     
-    //function  doesn't work
-    func updateStudentLocation(student: Student, completion: @escaping (Bool, ErrorStruct?) -> Void){
-        
-        let postStudentRequest = PostStudentRequest(firstName: student.firstName, lastName: student.lastName, latitude: student.latitude, longitude: student.longitude, mapString: student.mapString, mediaURL: student.mediaURL, uniqueKey: student.uniqueKey)
-        
-        print("This is the url for: \(#function) -> \(StudentAPIs.Endpoints.updateStudentLocation(student.objectId ?? "").url)")
-        var request = URLRequest(url: StudentAPIs.Endpoints.updateStudentLocation(student.objectId ?? "").url)
-        request.httpMethod = "PUT"
-        
-        //per mentors adding the first addValue method
-        request.addValue("application/json", forHTTPHeaderField: "Accept")
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        //        //per mentors "when you make a  request to the server you will need to pass 2 parameters "x-parse-rest-api-key" and "x-parse-application-id" to the header.
-        request.addValue(ParseHeaderKeys.APIKey, forHTTPHeaderField: ParseHeaderValues.APIKeyValues)
-        request.addValue(ParseHeaderKeys.ApplicationID, forHTTPHeaderField: ParseHeaderValues.ApplicationIDValues)
-        
-        let encoder = JSONEncoder()
-        encoder.keyEncodingStrategy = .convertToSnakeCase
-        
-        do {
-            request.httpBody = try encoder.encode(postStudentRequest)
-        } catch  {
-            print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
-            print("Error in: \(#function)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)")
-            DispatchQueue.main.async {
-                completion(false, error as? ErrorStruct)
-            }
-        }
-        
-        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
-            if let response = response as? HTTPURLResponse {
-                print("Response in: \(#function) \(response.statusCode)")
-            }
-            if let error = error {
-                print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
-                DispatchQueue.main.async {
-                    completion(false, error as? ErrorStruct)
-                }
-                return
-            }
-            
-            guard let data = data else {
-                print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
-                completion(false, error as? ErrorStruct)
-                return
-            }
-            
-            print(String(data: data, encoding: .utf8)!)
-            let decoder = JSONDecoder()
-            decoder.keyDecodingStrategy = .convertFromSnakeCase
-            
-            let newData = data.subdata(in: 5..<data.count)
-            print("This is the data thats printed: \(String(data: newData, encoding: .utf8)!)")
-            
-            do {
-                let responseObject = try decoder.decode(PutStudentResponse.self, from: newData)
-                print("student was updated at:  \(String(describing: responseObject.updatedAt))")
-                DispatchQueue.main.async {
-                    completion(true,nil)
-                }
-            } catch  {
-                print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
-                print("Error in: \(#function)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)")
-                DispatchQueue.main.async {
-                    completion(false, nil)
-                }
-            }
-        }
-        task.resume()
-    }
-    
-    //function doesn't work
     func postStudentLocation(student: Student, completion: @escaping (Bool, Error?) -> Void){
         let postRequest = PostStudentRequest(firstName: student.firstName, lastName: student.lastName, latitude: student.latitude, longitude: student.longitude, mapString: student.mapString, mediaURL: student.mediaURL, uniqueKey: student.uniqueKey)
         
@@ -452,37 +346,98 @@ class NetworkController {
             }
         }
     }
-    
-    //works
-    func getAllStudents(completion: @escaping (ErrorStruct?) -> Void){
-        funcForAllGetMethods(url: StudentAPIs.Endpoints.getAllStudents.url, responseType: TopLevelDictionary.self) { (response, error) in
-            if let error = error {
-                print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
-                DispatchQueue.main.async {
-                    completion(error as? ErrorStruct)
-                }
-                return
-            }
-            if let response = response {
-                var studentsWithFullNames = [Student]()
-                
-                for student in response.results {
-                    if student.firstName != "" && student.lastName != "" {
-                        print("Student's name: \(student.fullName)")
-                        studentsWithFullNames.append(student)
-                    }
-                }
-                
-                DispatchQueue.main.async {
-                    self.students = studentsWithFullNames
-                    completion(nil)
-                }
-            } else {
-                DispatchQueue.main.async {
-                    print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
-                    completion(error as? ErrorStruct)
-                }
-            }
-        }
-    }
+
+//    //function  doesn't work
+//       func updateStudentLocation(student: Student, completion: @escaping (Bool, ErrorStruct?) -> Void){
+//
+//           let postStudentRequest = PostStudentRequest(firstName: student.firstName, lastName: student.lastName, latitude: student.latitude, longitude: student.longitude, mapString: student.mapString, mediaURL: student.mediaURL, uniqueKey: student.uniqueKey)
+//
+//           print("This is the url for: \(#function) -> \(StudentAPIs.Endpoints.updateStudentLocation(student.objectId ?? "").url)")
+//           var request = URLRequest(url: StudentAPIs.Endpoints.updateStudentLocation(student.objectId ?? "").url)
+//           request.httpMethod = "PUT"
+//
+//           //per mentors adding the first addValue method
+//           request.addValue("application/json", forHTTPHeaderField: "Accept")
+//           request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+//
+//           //        //per mentors "when you make a  request to the server you will need to pass 2 parameters "x-parse-rest-api-key" and "x-parse-application-id" to the header.
+//           request.addValue(ParseHeaderKeys.APIKey, forHTTPHeaderField: ParseHeaderValues.APIKeyValues)
+//           request.addValue(ParseHeaderKeys.ApplicationID, forHTTPHeaderField: ParseHeaderValues.ApplicationIDValues)
+//
+//           let encoder = JSONEncoder()
+//           encoder.keyEncodingStrategy = .convertToSnakeCase
+//
+//           do {
+//               request.httpBody = try encoder.encode(postStudentRequest)
+//           } catch  {
+//               print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
+//               print("Error in: \(#function)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)")
+//               DispatchQueue.main.async {
+//                   completion(false, error as? ErrorStruct)
+//               }
+//           }
+//
+//           let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+//               if let response = response as? HTTPURLResponse {
+//                   print("Response in: \(#function) \(response.statusCode)")
+//               }
+//               if let error = error {
+//                   print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
+//                   DispatchQueue.main.async {
+//                       completion(false, error as? ErrorStruct)
+//                   }
+//                   return
+//               }
+//
+//               guard let data = data else {
+//                   print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
+//                   completion(false, error as? ErrorStruct)
+//                   return
+//               }
+//
+//               print(String(data: data, encoding: .utf8)!)
+//               let decoder = JSONDecoder()
+//               decoder.keyDecodingStrategy = .convertFromSnakeCase
+//
+//               let newData = data.subdata(in: 5..<data.count)
+//               print("This is the data thats printed: \(String(data: newData, encoding: .utf8)!)")
+//
+//               do {
+//                   let responseObject = try decoder.decode(PutStudentResponse.self, from: newData)
+//                   print("student was updated at:  \(String(describing: responseObject.updatedAt))")
+//                   DispatchQueue.main.async {
+//                       completion(true,nil)
+//                   }
+//               } catch  {
+//                   print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
+//                   print("Error in: \(#function)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)")
+//                   DispatchQueue.main.async {
+//                       completion(false, nil)
+//                   }
+//               }
+//           }
+//           task.resume()
+//       }
+
+//    //function works with optionals
+//      func getUserData(student: Student, completion: @escaping(Bool, ErrorStruct?) -> Void){
+//          let url = StudentAPIs.Endpoints.getUsers(student.uniqueKey).url
+//          funcForAllGetMethods(url: url, responseType: GetUserResponse.self) { (responseObject, error) in
+//              if let error = error {
+//                  print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
+//                  completion(false, error as? ErrorStruct)
+//                  return
+//              }
+//
+//              if let responseObject = responseObject {
+//                  print("This is the responseobject firstName: \(String(describing: responseObject.user.firstName))")
+//                  print("This is the responseobject lastName: \(String(describing: responseObject.user.lastName))")
+//                  print("This is the responseobject imageURL: \(String(describing: responseObject.user.imageUrl))")
+//                  print("This is the responseobject linkedinURL: \(String(describing: responseObject.user.linkedinUrl))")
+//              } else {
+//                  print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
+//                  completion(false, error as? ErrorStruct)
+//              }
+//          }
+//      }
 }
