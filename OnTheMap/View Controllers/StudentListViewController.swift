@@ -85,10 +85,10 @@ extension StudentListViewController: UITableViewDelegate,  UITableViewDataSource
         
         let student = students?[indexPath.row]
         cell.textLabel?.text = student?.fullName
-        cell.detailTextLabel?.text = student?.mediaURL
+//        cell.detailTextLabel?.text = student?.mediaURL
         
         //to test to see if the tableView is sorted properly
-//        cell.detailTextLabel?.text = student?.createdAt
+        cell.detailTextLabel?.text = student?.createdAt
         
         cell.imageView?.image = UIImage(named: "icon_pin")
         

@@ -454,39 +454,6 @@ class NetworkController {
     }
     
     //works
-    func getStudentsWithALimit(studentLimit limit: Int, completion: @escaping ( ErrorStruct?) -> Void){
-        funcForAllGetMethods(url: StudentAPIs.Endpoints.limitStudentSearch(limit).url, responseType: TopLevelDictionary.self) { (response, error) in
-            if let error = error {
-                print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
-                DispatchQueue.main.async {
-                    completion(error as? ErrorStruct)
-                }
-                return
-            }
-            if let response = response {
-                var studentsWithFullNames = [Student]()
-                
-                for student in response.results {
-                    if student.firstName != "" && student.lastName != "" {
-                        print("Student's name: \(student.fullName)")
-                        studentsWithFullNames.append(student)
-                    }
-                }
-                
-                DispatchQueue.main.async {
-                    self.students = studentsWithFullNames
-                    completion(nil)
-                }
-            } else {
-                DispatchQueue.main.async {
-                    print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
-                    completion(error as? ErrorStruct)
-                }
-            }
-        }
-    }
-    
-    //works
     func getAllStudents(completion: @escaping (ErrorStruct?) -> Void){
         funcForAllGetMethods(url: StudentAPIs.Endpoints.getAllStudents.url, responseType: TopLevelDictionary.self) { (response, error) in
             if let error = error {

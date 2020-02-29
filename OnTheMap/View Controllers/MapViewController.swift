@@ -37,13 +37,13 @@ class MapViewController: UIViewController {
     }
     
     func get100Students(){
-        NetworkController.shared.getStudentsWithALimit(studentLimit: 100) { (error) in
+       NetworkController.shared.orderStudentsInList { (error) in
             if let error = error {
                 print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
                 return
-            } else {
-                self.students = NetworkController.shared.students
             }
+            //if this worked then we should have students in network controller
+            self.students = NetworkController.shared.orderedStudents
         }
     }
         
