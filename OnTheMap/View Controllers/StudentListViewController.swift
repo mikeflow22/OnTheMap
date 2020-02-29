@@ -29,7 +29,6 @@ class StudentListViewController: UIViewController {
         tableView.dataSource = self
         orderStudentsArray()
         NotificationCenter.default.addObserver(self, selector: #selector(refreshTable), name: .postedStudentLocation, object: nil)
-        
     }
     
     @objc func refreshTable(){
@@ -41,13 +40,13 @@ class StudentListViewController: UIViewController {
         NetworkController.shared.orderStudentsInList { (success, error) in
             if let realError = error as? ErrorStruct {
                 DispatchQueue.main.async {
-                    self.failureAlert(title: "Network Failure", message: realError.localizedDescription + " \(#function)")
-                    self.connectionFailed()
+                    self.failureAlert(title: "Network Failure", message: realError.localizedDescription)
+//                    self.connectionFailed()
                 }
             } else if let error = error  {
                 DispatchQueue.main.async {
-                    self.failureAlert(title: "Network Failure", message: error.localizedDescription + " \(#function)")
-                    self.connectionFailed()
+                    self.failureAlert(title: "Network Failure", message: error.localizedDescription)
+//                    self.connectionFailed()
                 }
             }
             //if this worked then we should have students in network controller

@@ -63,11 +63,11 @@ class DetailViewController: UIViewController {
             } else {
                 if let realError = error as? ErrorStruct {
                     DispatchQueue.main.async {
-                        self.failureAlert(title: "Login Failure", message: realError.localizedDescription + "\(#function)")
+                        self.failureAlert(title: "Login Failure", message: realError.localizedDescription)
                     }
                 } else if let error = error {
                     DispatchQueue.main.async {
-                        self.failureAlert(title: "Login Failure", message: error.localizedDescription + "\(#function)")
+                        self.failureAlert(title: "Login Failure", message: error.localizedDescription)
                     }
                 }
             }

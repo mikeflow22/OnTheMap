@@ -33,7 +33,7 @@ class AddLocationViewController: UIViewController {
         activityIndicator.isHidden = true
     }
     
-    func dumbAlert(title: String, message: String) {
+    func addressAlert(title: String, message: String) {
          let alertVC = UIAlertController(title: title, message: message, preferredStyle: .alert)
          alertVC.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         present(alertVC, animated: true, completion: nil)
@@ -49,7 +49,7 @@ class AddLocationViewController: UIViewController {
             if let error = error {
                 print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
                 
-                self.dumbAlert(title: "Address Error", message: error.localizedDescription)
+                self.addressAlert(title: "Address Error", message: error.localizedDescription)
                 self.locationTextField.text = ""
                 self.activityIndicator.stopAnimating()
                 self.activityIndicator.isHidden = true
