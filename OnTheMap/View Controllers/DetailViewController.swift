@@ -111,7 +111,6 @@ class DetailViewController: UIViewController {
         let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         alert.addAction(submit)
         alert.addAction(cancel)
-        
         present(alert, animated: true, completion: nil)
     }
 }
