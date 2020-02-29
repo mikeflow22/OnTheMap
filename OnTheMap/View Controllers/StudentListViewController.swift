@@ -36,11 +36,21 @@ class StudentListViewController: UIViewController {
         students?.removeAll()
         orderStudentsArray()
     }
-    
+   
     func orderStudentsArray(){
-        NetworkController.shared.orderStudentsInList { (error) in
-            if let error = error {
-                print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
+        NetworkController.shared.orderStudentsInList { (success, error) in
+            
+            if let realError = error as? ErrorStruct {
+                DispatchQueue.main.async {
+                    self.failureAlert(title: "Network Failure", message: realError.localizedDescription ?? "something went wrong here: \(#function)")
+                    self.connectionFailed()
+                }
+                return
+            } else {
+                DispatchQueue.main.async {
+                    self.failureAlert(title: "Network Failure", message: error?.localizedDescription ?? "something went wrong here: \(#function)")
+                    self.connectionFailed()
+                }
                 return
             }
             //if this worked then we should have students in network controller
@@ -62,17 +72,6 @@ class StudentListViewController: UIViewController {
     
     @IBAction func addStudentLocation(_ sender: UIBarButtonItem) {
     }
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
-     }
-     */
-    
 }
 
 extension StudentListViewController: UITableViewDelegate,  UITableViewDataSource {
@@ -85,10 +84,10 @@ extension StudentListViewController: UITableViewDelegate,  UITableViewDataSource
         
         let student = students?[indexPath.row]
         cell.textLabel?.text = student?.fullName
-//        cell.detailTextLabel?.text = student?.mediaURL
+        cell.detailTextLabel?.text = student?.mediaURL
         
         //to test to see if the tableView is sorted properly
-        cell.detailTextLabel?.text = student?.createdAt
+//        cell.detailTextLabel?.text = student?.createdAt
         
         cell.imageView?.image = UIImage(named: "icon_pin")
         
@@ -98,13 +97,10 @@ extension StudentListViewController: UITableViewDelegate,  UITableViewDataSource
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let student = students?[indexPath.row], let url = URL(string: student.mediaURL) {
             let app = UIApplication.shared
-            
             app.open(url, options: [:], completionHandler: nil)
         } else {
             print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
             return
         }
-        
     }
-    
 }

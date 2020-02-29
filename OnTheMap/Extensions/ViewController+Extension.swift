@@ -9,24 +9,42 @@
 import UIKit
 
 extension UIViewController {
-    func showLoginFailure(message: String) {
-           let alertVC = UIAlertController(title: "Login Failed", message: message, preferredStyle: .alert)
-           alertVC.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-           show(alertVC, sender: nil)
-       }
-       
-     func handleLogoutResponse(success: Bool, error: ErrorStruct?){
+    func failureAlert(title: String, message: String) {
+        let alertVC = UIAlertController(title: "title", message: message, preferredStyle: .alert)
+        alertVC.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        show(alertVC, sender: nil)
+    }
+    
+    func handleLogoutResponse(success: Bool, error: Error?){
         if success {
             print("Success in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
             DispatchQueue.main.async {
                 self.dismiss(animated: true, completion: nil)
             }
         } else {
-            print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
+            if let realError = error as? ErrorStruct {
+                DispatchQueue.main.async {
+                    self.failureAlert(title: "Logout Failure", message: realError.localizedDescription ?? "something went wrong here: \(#function)")
+                }
+            }
             DispatchQueue.main.async {
-                self.showLoginFailure(message: error?.localizedDescription ?? "logout attempted failed!")
+                self.failureAlert(title: "Logout Failure", message: error?.localizedDescription ?? "something went wrong here: \(#function)")
             }
             return
+        }
+    }
+    
+    func connectionFailed(){
+        NetworkController.shared.logout { (success, error) in
+            if success {
+                print("Success in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
+                DispatchQueue.main.async {
+                     self.dismiss(animated: true, completion: nil)
+                }
+            } else {
+                print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
+                return
+            }
         }
     }
 }

@@ -234,12 +234,12 @@ class NetworkController {
         task.resume()
     }
     
-    func orderStudentsInList(completion: @escaping (ErrorStruct?) -> Void){
+    func orderStudentsInList(completion: @escaping (Bool, Error?) -> Void){
         funcForAllGetMethods(url: StudentAPIs.Endpoints.order.url, responseType: TopLevelDictionary.self) { (responseObject, error) in
             if let error = error {
                 print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
                 DispatchQueue.main.async {
-                    completion(error as? ErrorStruct)
+                    completion(false, error)
                 }
                 return
             }
@@ -247,12 +247,12 @@ class NetworkController {
             if let responseObject = responseObject {
                 DispatchQueue.main.async {
                     self.orderedStudents = responseObject.results
-                    completion(nil)
+                    completion(true, nil)
                 }
             } else {
                 print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
                 DispatchQueue.main.async {
-                    completion(error as? ErrorStruct)
+                    completion(false, error)
                 }
                 return
             }
@@ -315,7 +315,7 @@ class NetworkController {
     }
     
     //works
-    func logout(completion: @escaping (Bool, ErrorStruct?) -> Void){
+    func logout(completion: @escaping (Bool, Error?) -> Void){
         var request = URLRequest(url: StudentAPIs.Endpoints.session.url)
         print("This is the url in function: \(#function) -> url: \(StudentAPIs.Endpoints.session.url)")
         
@@ -335,7 +335,7 @@ class NetworkController {
                 print("Response deleting session: \(response.statusCode)")
             }
             
-            if let error = error as? ErrorStruct {
+            if let error = error {
                 print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
                 completion(false, error)
                 return

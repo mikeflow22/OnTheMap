@@ -37,16 +37,25 @@ class MapViewController: UIViewController {
     }
     
     func get100Students(){
-       NetworkController.shared.orderStudentsInList { (error) in
-            if let error = error {
-                print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
+        NetworkController.shared.orderStudentsInList { ( success, error) in
+            if let realError = error as? ErrorStruct {
+                DispatchQueue.main.async {
+                    self.failureAlert(title: "Network Failure", message: realError.localizedDescription ?? "something went wrong here: \(#function)")
+                    self.connectionFailed()
+                }
+                return
+            } else {
+                DispatchQueue.main.async {
+                    self.failureAlert(title: "Network Failure", message: error?.localizedDescription ?? "something went wrong here: \(#function)")
+                    self.connectionFailed()
+                }
                 return
             }
             //if this worked then we should have students in network controller
             self.students = NetworkController.shared.orderedStudents
         }
     }
-        
+    
     private func createAnnotations(forStudents students: [Student]){
         for student in students {
             let coordinate = student.coordinate
@@ -65,29 +74,20 @@ class MapViewController: UIViewController {
         //add annotations to mapview
         self.mapView.addAnnotations(self.annotations)
     }
-        
+    
     @IBAction func logout(_ sender: UIBarButtonItem) {
         NetworkController.shared.logout(completion: self.handleLogoutResponse(success:error:))
     }
-        
+    
     @IBAction func refresh(_ sender: UIBarButtonItem) {
         //clear annotations
         self.mapView.removeAnnotations(self.annotations)
-            
+        
         //network call to retrieve students
         get100Students()
-        }
-        
-    @IBAction func addStudentLocation(_ sender: UIBarButtonItem) {
-    }
-        /*
-         // MARK: - Navigation
-         
-         // In a storyboard-based application, you will often want to do a little preparation before navigation
-         override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-         // Get the new view controller using segue.destination.
-         // Pass the selected object to the new view controller.
-         }
-         */
     }
     
+    @IBAction func addStudentLocation(_ sender: UIBarButtonItem) {
+    }
+}
+

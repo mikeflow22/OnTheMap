@@ -33,6 +33,10 @@ class AddLocationViewController: UIViewController {
         geoCoder.geocodeAddressString(location) { (placemarks, error) in
             if let error = error {
                 print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
+                DispatchQueue.main.async {
+                    self.failureAlert(title: "Address Error", message: error.localizedDescription)
+                    self.connectionFailed()
+                }
                 return
             }
             

@@ -46,7 +46,7 @@ class DetailViewController: UIViewController {
     
     @IBAction func finishButtonTapped(_ sender: UIButton) {
         //post to server
-       getUserInfo()
+        getUserInfo()
     }
     
     func post(firstName: String, lastName: String, coordinate: CLLocationCoordinate2D, mapString: String, mediaURL: String){
@@ -54,21 +54,23 @@ class DetailViewController: UIViewController {
         let student = Student(firstName: firstName, lastName: lastName, longitude: coordinate.longitude, latitude: coordinate.latitude, mapString: mapString, mediaURL: mediaURL, uniqueKey: NetworkController.Auth.accountKey, objectId: nil, createdAt: nil, updatedAt: nil)
         
         NetworkController.shared.postStudentLocation(student: student) { (success, error) in
-            if let error = error {
-                print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
-                return
-            }
-            
             if success {
                 print("Success in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
                 DispatchQueue.main.async {
                     NotificationCenter.default.post(name: .postedStudentLocation, object: nil)
                     self.dismiss(animated: true, completion: nil)
-                    
                 }
             } else {
-                print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
-                return
+                if let realError = error as? ErrorStruct {
+                    DispatchQueue.main.async {
+                        self.failureAlert(title: "Logout Failure", message: realError.localizedDescription ?? "something went wrong here: \(#function)")
+                        self.connectionFailed()
+                    }
+                }
+                DispatchQueue.main.async {
+                    self.failureAlert(title: "Logout Failure", message: error?.localizedDescription ?? "something went wrong here: \(#function)")
+                    self.connectionFailed()
+                }
             }
         }
     }
@@ -98,9 +100,9 @@ class DetailViewController: UIViewController {
                 return
             }
             guard let coordinate = self.coordinate, let mediaURL = self.mediaURL, let addressString = self.addressString else {
-                              print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
-                              return
-                          }
+                print("Error in file: \(#file), in the body of the function: \(#function) on line: \(#line)\n")
+                return
+            }
             
             DispatchQueue.main.async {
                 self.post(firstName: firstName, lastName: lastName, coordinate: coordinate, mapString: addressString, mediaURL: mediaURL)
@@ -113,16 +115,6 @@ class DetailViewController: UIViewController {
         
         present(alert, animated: true, completion: nil)
     }
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 }
 
 extension Date {
