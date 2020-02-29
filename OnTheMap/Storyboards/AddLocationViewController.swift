@@ -23,6 +23,7 @@ class AddLocationViewController: UIViewController {
     @IBOutlet weak var locationTextField: UITextField!
     @IBOutlet weak var mediaURLTexField: UITextField!
     @IBOutlet weak var findLocationButtonProperties: UIButton!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,6 +31,7 @@ class AddLocationViewController: UIViewController {
     
     func reverseGeoCodeString(fromLocation location: String) {
         let geoCoder = CLGeocoder()
+        
         geoCoder.geocodeAddressString(location) { (placemarks, error) in
             if let error = error {
                 print("Error in file: \(#file) in the body of the function: \(#function)\n on line: \(#line)\n Readable Error: \(error.localizedDescription)\n Technical Error: \(error)\n")
