@@ -29,29 +29,26 @@ class StudentListViewController: UIViewController {
         tableView.dataSource = self
         orderStudentsArray()
         NotificationCenter.default.addObserver(self, selector: #selector(refreshTable), name: .postedStudentLocation, object: nil)
-
+        
     }
     
     @objc func refreshTable(){
         students?.removeAll()
         orderStudentsArray()
     }
-   
+    
     func orderStudentsArray(){
         NetworkController.shared.orderStudentsInList { (success, error) in
-            
             if let realError = error as? ErrorStruct {
                 DispatchQueue.main.async {
-                    self.failureAlert(title: "Network Failure", message: realError.localizedDescription ?? "something went wrong here: \(#function)")
+                    self.failureAlert(title: "Network Failure", message: realError.localizedDescription + " \(#function)")
                     self.connectionFailed()
                 }
-                return
-            } else {
+            } else if let error = error  {
                 DispatchQueue.main.async {
-                    self.failureAlert(title: "Network Failure", message: error?.localizedDescription ?? "something went wrong here: \(#function)")
+                    self.failureAlert(title: "Network Failure", message: error.localizedDescription + " \(#function)")
                     self.connectionFailed()
                 }
-                return
             }
             //if this worked then we should have students in network controller
             self.students = NetworkController.shared.orderedStudents
@@ -87,7 +84,7 @@ extension StudentListViewController: UITableViewDelegate,  UITableViewDataSource
         cell.detailTextLabel?.text = student?.mediaURL
         
         //to test to see if the tableView is sorted properly
-//        cell.detailTextLabel?.text = student?.createdAt
+        //        cell.detailTextLabel?.text = student?.createdAt
         
         cell.imageView?.image = UIImage(named: "icon_pin")
         
